@@ -1,0 +1,88 @@
+# Cloudflare Tunnel Configuration for Noogh Unified System
+# نظام نوغ الموحد - إعدادات Cloudflare Tunnel
+
+# Tunnel credentials (from Cloudflare Zero Trust)
+tunnel: noogh-api
+credentials-file: /home/noogh/.cloudflared/tunnel-credentials.json
+
+# Ingress rules - ترتيب التوجيهات
+ingress:
+  # API Documentation (Swagger)
+  - hostname: plugin.nooogh.com
+    path: /docs
+    service: http://localhost:8000
+    originRequest:
+      noTLSVerify: true
+      connectTimeout: 30s
+      http2Origin: true
+
+  # API Health Check
+  - hostname: plugin.nooogh.com
+    path: /health
+    service: http://localhost:8000
+    originRequest:
+      noTLSVerify: true
+      connectTimeout: 10s
+
+  # Government System
+  - hostname: plugin.nooogh.com
+    path: /government/*
+    service: http://localhost:8000
+    originRequest:
+      noTLSVerify: true
+      connectTimeout: 30s
+
+  # API Routes
+  - hostname: plugin.nooogh.com
+    path: /api/*
+    service: http://localhost:8000
+    originRequest:
+      noTLSVerify: true
+      connectTimeout: 30s
+      http2Origin: true
+
+  # System Routes
+  - hostname: plugin.nooogh.com
+    path: /system/*
+    service: http://localhost:8000
+    originRequest:
+      noTLSVerify: true
+      connectTimeout: 30s
+
+  # Chat Routes
+  - hostname: plugin.nooogh.com
+    path: /chat/*
+    service: http://localhost:8000
+    originRequest:
+      noTLSVerify: true
+      connectTimeout: 60s
+
+  # Default: All other paths
+  - hostname: plugin.nooogh.com
+    service: http://localhost:9001
+    originRequest:
+      noTLSVerify: true
+      connectTimeout: 30s
+      http2Origin: true
+
+
+
+
+  # Catch all - 404 for unknown hosts
+  - service: http_status:404
+
+# Logging configuration
+loglevel: info
+logfile: /home/noogh/projects/noogh_unified_system/logs/cloudflare_tunnel.log
+
+# Metrics endpoint
+metrics: 0.0.0.0:2001
+
+# Auto-update settings
+no-autoupdate: false
+
+# Protocol
+protocol: quic
+
+
+

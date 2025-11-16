@@ -1,0 +1,104 @@
+openapi: 3.0.0
+info:
+  title: Noogh Unified AI System API
+  description: نظام نوغ الموحد للذكاء الاصطناعي - API للوصول إلى الوزراء والنظام الحكومي
+  version: 1.0.0
+servers:
+  - url: https://nooogh.com
+    description: Noogh Production Server
+
+paths:
+  /health:
+    get:
+      summary: فحص صحة النظام
+      description: التحقق من أن النظام يعمل بشكل صحيح
+      operationId: checkHealth
+      responses:
+        '200':
+          description: النظام يعمل بنجاح
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  system:
+                    type: string
+                  version:
+                    type: string
+
+  /government/status:
+    get:
+      summary: حالة النظام الحكومي
+      description: الحصول على معلومات عن حالة الوزراء والنظام الحكومي
+      operationId: getGovernmentStatus
+      responses:
+        '200':
+          description: معلومات النظام الحكومي
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  president:
+                    type: string
+                  ministers:
+                    type: object
+
+  /government/ministers:
+    get:
+      summary: قائمة الوزراء
+      description: الحصول على قائمة جميع الوزراء في النظام (14 وزير)
+      operationId: listMinisters
+      responses:
+        '200':
+          description: قائمة الوزراء
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total:
+                    type: integer
+                  ministers:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                        sector:
+                          type: string
+                        icon:
+                          type: string
+
+  /chat:
+    post:
+      summary: الدردشة مع نوغ
+      description: إرسال رسالة إلى نظام نوغ والحصول على رد
+      operationId: chatWithNoogh
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  description: الرسالة المراد إرسالها
+              required:
+                - message
+      responses:
+        '200':
+          description: رد من نوغ
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  response:
+                    type: string

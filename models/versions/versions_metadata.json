@@ -1,0 +1,211 @@
+{
+  "versions": [
+    {
+      "version_id": "v2025-11-10_07-13-10",
+      "timestamp": "2025-11-10T07:13:10.026880",
+      "model_path": "models/simulated_model",
+      "performance_metrics": {
+        "accuracy": 0.956626214605941,
+        "avg_response_time_ms": 11.583245849531561,
+        "cognition_score": 0.981626214605941,
+        "success_rate": 0.9696392135310324,
+        "memory_usage_mb": 546.8594383121875,
+        "test_samples": 1000,
+        "timestamp": "2025-11-10T07:13:10.026659"
+      },
+      "training_params": {
+        "test": true
+      },
+      "is_active": true,
+      "is_baseline": true
+    },
+    {
+      "version_id": "v2025-11-10_11-51-50",
+      "timestamp": "2025-11-10T11:51:50.044119",
+      "model_path": "models/simulated_model",
+      "performance_metrics": {
+        "accuracy": 0.9365357358951445,
+        "avg_response_time_ms": 11.681390902982235,
+        "cognition_score": 0.9615357358951445,
+        "success_rate": 0.9915856627560378,
+        "memory_usage_mb": 569.6941774523593,
+        "test_samples": 1000,
+        "timestamp": "2025-11-10T11:51:50.043642"
+      },
+      "training_params": {},
+      "is_active": false,
+      "is_baseline": false
+    },
+    {
+      "version_id": "v2025-11-11_11-51-53",
+      "timestamp": "2025-11-11T11:51:53.110445",
+      "model_path": "models/simulated_model",
+      "performance_metrics": {
+        "accuracy": 0.9291668883025923,
+        "avg_response_time_ms": 19.563106054353682,
+        "cognition_score": 0.9541668883025923,
+        "success_rate": 0.9587593087601461,
+        "memory_usage_mb": 650.0758587857531,
+        "test_samples": 1000,
+        "timestamp": "2025-11-11T11:51:53.109974"
+      },
+      "training_params": {},
+      "is_active": false,
+      "is_baseline": false
+    },
+    {
+      "version_id": "v2025-11-12_11-51-56",
+      "timestamp": "2025-11-12T11:51:56.214623",
+      "model_path": "models/simulated_model",
+      "performance_metrics": {
+        "accuracy": 0.9248875858962324,
+        "avg_response_time_ms": 13.638941527722995,
+        "cognition_score": 0.9498875858962325,
+        "success_rate": 0.9760762020390437,
+        "memory_usage_mb": 550.7474979211962,
+        "test_samples": 1000,
+        "timestamp": "2025-11-12T11:51:56.214289"
+      },
+      "training_params": {},
+      "is_active": false,
+      "is_baseline": false
+    },
+    {
+      "version_id": "v2025-11-13_11-51-59",
+      "timestamp": "2025-11-13T11:51:59.413627",
+      "model_path": "models/simulated_model",
+      "performance_metrics": {
+        "accuracy": 0.9727191502955636,
+        "avg_response_time_ms": 16.11811111194632,
+        "cognition_score": 0.9977191502955636,
+        "success_rate": 0.9583013055304698,
+        "memory_usage_mb": 750.273010032739,
+        "test_samples": 1000,
+        "timestamp": "2025-11-13T11:51:59.413077"
+      },
+      "training_params": {},
+      "is_active": false,
+      "is_baseline": false
+    },
+    {
+      "version_id": "v2025-11-15_03-53-22",
+      "timestamp": "2025-11-15T03:53:22.422077",
+      "model_path": "models/simulated_model",
+      "performance_metrics": {
+        "accuracy": 0.9437776966065403,
+        "avg_response_time_ms": 17.749181747546043,
+        "cognition_score": 0.9687776966065403,
+        "success_rate": 0.9868190569574536,
+        "memory_usage_mb": 672.7334441424496,
+        "test_samples": 1000,
+        "timestamp": "2025-11-15T03:53:22.421763"
+      },
+      "training_params": {},
+      "is_active": false,
+      "is_baseline": false
+    },
+    {
+      "version_id": "v2025-11-15_03-54-27",
+      "timestamp": "2025-11-15T03:54:27.536423",
+      "model_path": "models/simulated_model",
+      "performance_metrics": {
+        "accuracy": 0.9523174143073798,
+        "avg_response_time_ms": 10.295835012998502,
+        "cognition_score": 0.9773174143073798,
+        "success_rate": 0.9651516485409116,
+        "memory_usage_mb": 792.7925087472689,
+        "test_samples": 1000,
+        "timestamp": "2025-11-15T03:54:27.536081"
+      },
+      "training_params": {},
+      "is_active": false,
+      "is_baseline": false
+    },
+    {
+      "version_id": "v2025-11-15_04-25-05",
+      "timestamp": "2025-11-15T04:25:05.931958",
+      "model_path": "models/simulated_model",
+      "performance_metrics": {
+        "accuracy": 1.0,
+        "avg_response_time_ms": 17.632724551184804,
+        "cognition_score": 1.0,
+        "success_rate": 0.9647270939841999,
+        "memory_usage_mb": 748.3554849741145,
+        "test_samples": 1000,
+        "timestamp": "2025-11-15T04:25:05.931605"
+      },
+      "training_params": {},
+      "is_active": false,
+      "is_baseline": false
+    },
+    {
+      "version_id": "v2025-11-15_04-26-12",
+      "timestamp": "2025-11-15T04:26:12.744984",
+      "model_path": "models/simulated_model",
+      "performance_metrics": {
+        "accuracy": 1.0,
+        "avg_response_time_ms": 13.351882428557639,
+        "cognition_score": 1.0,
+        "success_rate": 0.982825985215923,
+        "memory_usage_mb": 673.1093692383686,
+        "test_samples": 1000,
+        "timestamp": "2025-11-15T04:26:12.744719"
+      },
+      "training_params": {},
+      "is_active": false,
+      "is_baseline": false
+    },
+    {
+      "version_id": "v2025-11-15_04-27-31",
+      "timestamp": "2025-11-15T04:27:31.222899",
+      "model_path": "models/simulated_model",
+      "performance_metrics": {
+        "accuracy": 0.9526162485758434,
+        "avg_response_time_ms": 18.685362787909327,
+        "cognition_score": 0.9776162485758434,
+        "success_rate": 0.97023411517929,
+        "memory_usage_mb": 687.404553616632,
+        "test_samples": 1000,
+        "timestamp": "2025-11-15T04:27:31.222592"
+      },
+      "training_params": {},
+      "is_active": false,
+      "is_baseline": false
+    },
+    {
+      "version_id": "v2025-11-15_06-59-46",
+      "timestamp": "2025-11-15T06:59:46.133538",
+      "model_path": "models/simulated_model",
+      "performance_metrics": {
+        "accuracy": 0.9141572770042382,
+        "avg_response_time_ms": 11.850972281842946,
+        "cognition_score": 0.9391572770042382,
+        "success_rate": 0.9608011523733118,
+        "memory_usage_mb": 598.4689001260774,
+        "test_samples": 1000,
+        "timestamp": "2025-11-15T06:59:46.133291"
+      },
+      "training_params": {},
+      "is_active": false,
+      "is_baseline": false
+    },
+    {
+      "version_id": "v2025-11-16_06-59-49",
+      "timestamp": "2025-11-16T06:59:49.235371",
+      "model_path": "models/simulated_model",
+      "performance_metrics": {
+        "accuracy": 0.9596930769918457,
+        "avg_response_time_ms": 15.626596644391354,
+        "cognition_score": 0.9846930769918456,
+        "success_rate": 0.9989134580277773,
+        "memory_usage_mb": 507.0668381708574,
+        "test_samples": 1000,
+        "timestamp": "2025-11-16T06:59:49.229705"
+      },
+      "training_params": {},
+      "is_active": false,
+      "is_baseline": false
+    }
+  ],
+  "last_updated": "2025-11-16T06:59:49.236296"
+}
