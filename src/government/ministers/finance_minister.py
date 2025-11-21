@@ -30,8 +30,13 @@ class FinanceMinister(BaseMinister):
     - Spot vs Futures decision logic
     """
     
-    def __init__(self, brain: Optional[Any] = None):
-        """Initialize Finance Minister with dual exchanges."""
+    def __init__(self, brain: Optional[Any] = None, health_minister: Optional[Any] = None):
+        """Initialize Finance Minister with dual exchanges and health monitoring.
+        
+        Args:
+            brain: LocalBrainService instance for AI inference
+            health_minister: HealthMinister instance for system health checks
+        """
         super().__init__(
             name="Finance Minister (Hybrid Trader)",
             description="Dual-market trader (spot + futures). Paper trading mode.",
@@ -53,6 +58,13 @@ Analyze and recommend the appropriate market."""
         # Vision Service - AI-powered chart analysis
         self.vision = None
         self._init_vision()
+        
+        # Health Minister - Hardware safety monitoring
+        self.health_minister = health_minister
+        if health_minister:
+            logger.info("🏥 HealthMinister linked for GPU safety checks")
+        else:
+            logger.warning("⚠️ HealthMinister not provided - GPU safety checks disabled")
 
         # Paper trading setup
         from src.core.settings import Settings
@@ -549,15 +561,34 @@ Answer: LONG, SHORT, or NONE"""
                 
                 result = await self.analyze_specific_coin(symbol, trigger)
                 
+                # Handle the new simplified format
+                signal = result.get("signal", "UNKNOWN")
+                reason = result.get("reason", "No reason provided")
+                
                 if result.get("success"):
                     self.tasks_successful += 1
                     
-                    summary = f"📊 {symbol} Analysis Complete:\n\n"
-                    summary += f"Spot: {result['spot_recommendation'].get('signal', 'N/A')}\n"
-                    if result.get('vision_analysis'):
-                         summary += f"Vision: {result['vision_analysis'].get('analysis', 'N/A')[:50]}...\n"
-                    summary += f"Futures: {result['futures_recommendation'].get('signal', 'N/A') if result.get('futures_recommendation') else 'N/A'}\n"
-                    summary += f"Trades Recorded: {len(result['trades_recorded'])}"
+                    # Build user-friendly summary
+                    summary = f"📊 {symbol} Analysis Complete\n\n"
+                    summary += f"🎯 Signal: **{signal}**\n"
+                    summary += f"📝 Reason: {reason}\n"
+                    
+                    # Add confluence details if available
+                    if "text_signal" in result and "vision_signal" in result:
+                        summary += f"\n🤖 Text Signal: {result['text_signal']}\n"
+                        summary += f"👁️ Vision Signal: {result['vision_signal']}\n"
+                    
+                    # Add safety warnings if present
+                    if result.get("gpu_temp"):
+                        summary += f"\n🌡️ GPU Temp: {result['gpu_temp']}°C\n"
+                    
+                    # Show confidence
+                    confidence = result.get("confidence", "N/A")
+                    summary += f"📈 Confidence: {confidence}\n"
+                    
+                    # Show if trade was recorded
+                    if result.get("trade_recorded"):
+                        summary += f"\n✅ Paper trade recorded at ${result.get('price', 0):.2f}\n"
                     
                     return {
                         "success": True,

@@ -93,12 +93,15 @@ class President:
         from src.government.ministers.communication_minister import CommunicationMinister
         
         # Initialize complete cabinet (7 ministers)
+        # Note: HealthMinister must be created first for FinanceMinister dependency
+        health_minister = HealthMinister(brain=brain)
+        
         self.cabinet = {
             "education": EducationMinister(brain=brain),
             "security": SecurityMinister(brain=brain),
             "development": DevelopmentMinister(brain=brain),
-            "finance": FinanceMinister(brain=brain),
-            "health": HealthMinister(brain=brain),
+            "finance": FinanceMinister(brain=brain, health_minister=health_minister),
+            "health": health_minister,
             "foreign": ForeignMinister(brain=brain),
             "communication": CommunicationMinister(brain=brain),
         }
