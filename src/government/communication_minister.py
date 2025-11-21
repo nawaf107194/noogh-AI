@@ -47,7 +47,7 @@ class CommunicationMinister(BaseMinister):
     - conversation: إدارة المحادثات
     """
 
-    def __init__(self, verbose: bool = True):
+    def __init__(self, verbose: bool = True, brain_hub: Any = None):
         """
         Args:
             verbose: عرض التفاصيل
@@ -84,6 +84,8 @@ class CommunicationMinister(BaseMinister):
             authorities=authorities,
             resources=resources,
             verbose=verbose
+        ,
+            brain_hub=brain_hub
         )
 
         # Initialize conversations tracking

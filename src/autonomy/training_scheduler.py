@@ -416,8 +416,26 @@ class TrainingScheduler:
 # Global training scheduler instance
 _training_scheduler = None
 
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# DI Container Integration
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
 def get_training_scheduler() -> TrainingScheduler:
-    """Get global training scheduler instance"""
+    """
+    Get global training scheduler instance from DI container
+    
+    Returns:
+        TrainingScheduler instance (singleton)
+    """
+    try:
+        from src.core.di import Container
+        scheduler = Container.resolve("training_scheduler")
+        if scheduler is not None:
+            return scheduler
+    except ImportError:
+        pass
+    
+    # Fallback to manual singleton for backward compatibility
     global _training_scheduler
     if _training_scheduler is None:
         _training_scheduler = TrainingScheduler()

@@ -24,7 +24,7 @@ class ResearchMinister(BaseMinister):
     وزير البحث والتطوير - مسؤول عن البحث العلمي وتحليل الأوراق واقتراح الأفكار
     """
 
-    def __init__(self, verbose: bool = True):
+    def __init__(self, verbose: bool = True, brain_hub: Any = None):
         super().__init__(
             minister_type=MinisterType.RESEARCH,
             name="Research Minister",
@@ -32,6 +32,8 @@ class ResearchMinister(BaseMinister):
             verbose=verbose,
             specialty="Scientific Research and Innovation",
             description="البحث العلمي، تحليل الأوراق، اقتراح أفكار"
+        ,
+            brain_hub=brain_hub
         )
 
     def _can_handle_specific_task(self, task_type: str, task_data: Dict[str, Any]) -> bool:

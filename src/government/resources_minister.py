@@ -24,7 +24,7 @@ class ResourcesMinister(BaseMinister):
     وزير الموارد - مسؤول عن إدارة وتوزيع وتحسين الموارد
     """
 
-    def __init__(self, verbose: bool = True):
+    def __init__(self, verbose: bool = True, brain_hub: Any = None):
         super().__init__(
             minister_type=MinisterType.RESOURCES,
             name="Resources Minister",
@@ -32,6 +32,8 @@ class ResourcesMinister(BaseMinister):
             verbose=verbose,
             specialty="Resource Management and Optimization",
             description="إدارة الموارد، التوزيع، التحسين، تخطيط السعة"
+        ,
+            brain_hub=brain_hub
         )
 
     def _can_handle_specific_task(self, task_type: str, task_data: Dict[str, Any]) -> bool:

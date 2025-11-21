@@ -30,7 +30,12 @@ def get_development_minister():
     global _development_minister
     if _development_minister is None:
         from government.development_minister import DevelopmentMinister
-        _development_minister = DevelopmentMinister(verbose=True, auto_fix_enabled=False)
+        _development_minister = DevelopmentMinister(
+            verbose=True,
+            auto_fix_enabled=True,  # ✅ ENABLED for production
+            max_complexity=15,
+            min_documentation_coverage=50.0
+        )
     return _development_minister
 
 

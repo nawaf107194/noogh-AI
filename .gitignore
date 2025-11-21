@@ -52,3 +52,9 @@ Thumbs.db
 *.tmp
 *.temp
 *.cache
+
+# Project Specific
+src/api/venv/
+src/dashboard/node_modules/
+src/**/__pycache__/
+

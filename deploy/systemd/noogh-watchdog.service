@@ -1,0 +1,24 @@
+[Unit]
+Description=Noogh Unified System - Process Watchdog
+After=network.target noogh-api.service
+Wants=noogh-api.service
+
+[Service]
+Type=simple
+User=noogh
+Group=noogh
+WorkingDirectory=/home/noogh/projects/noogh_unified_system
+Environment="PATH=/home/noogh/projects/noogh_unified_system/venv/bin:/usr/local/bin:/usr/bin:/bin"
+Environment="WATCHDOG_INTERVAL=60"
+Environment="MAX_RESTARTS=5"
+
+ExecStart=/home/noogh/projects/noogh_unified_system/scripts/watchdog.sh monitor
+
+Restart=always
+RestartSec=30
+
+StandardOutput=append:/home/noogh/projects/noogh_unified_system/logs/watchdog.log
+StandardError=append:/home/noogh/projects/noogh_unified_system/logs/watchdog-error.log
+
+[Install]
+WantedBy=multi-user.target

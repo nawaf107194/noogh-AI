@@ -1,0 +1,93 @@
+groups:
+  - name: noogh_alerts
+    interval: 30s
+    rules:
+      # High error rate
+      - alert: HighErrorRate
+        expr: rate(noogh_api_errors_total[5m]) > 10
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High API error rate detected"
+          description: "API error rate is {{ $value }} errors/sec over the last 5 minutes"
+
+      # Very high error rate
+      - alert: CriticalErrorRate
+        expr: rate(noogh_api_errors_total[5m]) > 50
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Critical API error rate"
+          description: "API error rate is {{ $value }} errors/sec - immediate attention required"
+
+      # High latency
+      - alert: HighLatency
+        expr: histogram_quantile(0.95, rate(noogh_http_request_duration_seconds_bucket[5m])) > 2
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High API latency detected"
+          description: "95th percentile latency is {{ $value }}s"
+
+      # Service down
+      - alert: ServiceDown
+        expr: up{job="noogh-api"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Noogh API service is down"
+          description: "The Noogh API service has been down for more than 1 minute"
+
+      # High CPU usage
+      - alert: HighCPUUsage
+        expr: noogh_cpu_usage_percent > 90
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High CPU usage detected"
+          description: "CPU usage is {{ $value }}%"
+
+      # High memory usage
+      - alert: HighMemoryUsage
+        expr: (noogh_memory_usage_bytes / 1024 / 1024 / 1024) > 3.5
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High memory usage detected"
+          description: "Memory usage is {{ $value }}GB"
+
+      # Disk space
+      - alert: LowDiskSpace
+        expr: noogh_disk_usage_percent > 85
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Low disk space"
+          description: "Disk usage is {{ $value }}%"
+
+      # Critical disk space
+      - alert: CriticalDiskSpace
+        expr: noogh_disk_usage_percent > 95
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Critical disk space"
+          description: "Disk usage is {{ $value }}% - immediate action required"
+
+      # Pod restart
+      - alert: PodRestartingFrequently
+        expr: rate(kube_pod_container_status_restarts_total{namespace="noogh-system"}[15m]) > 0.1
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Pod restarting frequently"
+          description: "Pod {{ $labels.pod }} is restarting {{ $value }} times per second"

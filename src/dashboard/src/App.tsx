@@ -5,6 +5,8 @@ import { Ministers } from './pages/Ministers';
 import { Trading } from './pages/Trading';
 import { Reports } from './pages/Reports';
 import { Settings } from './pages/Settings';
+import { Automation } from './pages/Automation';
+import { Chat } from './pages/Chat';
 
 function App() {
   return (
@@ -16,6 +18,8 @@ function App() {
           <Route path="/ministers" element={<Ministers />} />
           <Route path="/trading" element={<Trading />} />
           <Route path="/reports" element={<Reports />} />
+          <Route path="/automation" element={<Automation />} />
+          <Route path="/chat" element={<Chat />} />
           <Route path="/settings" element={<Settings />} />
         </Routes>
       </main>

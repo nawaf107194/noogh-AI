@@ -17,50 +17,20 @@ Version: 1.0.0
 Date: 2025-11-10
 """
 
-import sys
-from pathlib import Path
-PROJECT_ROOT = Path(__file__).parent.parent.parent
-sys.path.insert(0, str(PROJECT_ROOT))
-
 import logging
 from typing import Dict, List, Any, Optional
 from datetime import datetime
 from dataclasses import dataclass, asdict
 
-# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-# DEEP COGNITION v1.2 Lite - Visual & Linguistic Intelligence
-# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-try:
-    from vision.scene_understanding import SceneUnderstandingEngine
-    from vision.material_analyzer import MaterialAnalyzer
-    from reasoning.meta_confidence import MetaConfidenceCalibrator
-    from nlp.semantic_intent_analyzer import SemanticIntentAnalyzer
-    from integration.vision_reasoning_sync import VisionReasoningSynchronizer
-    HAS_DEEP_COGNITION = True
-except ImportError as e:
-    logging.warning(f"⚠️ Deep Cognition v1.2 not fully available: {e}")
-    HAS_DEEP_COGNITION = False
+from src.core.di import Container
 
-# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-# AGENT BRAIN - Planning & Execution
-# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-try:
-    from agent.brain import AgentBrain
-    HAS_AGENT_BRAIN = True
-except ImportError as e:
-    logging.warning(f"⚠️ Agent Brain not available: {e}")
-    HAS_AGENT_BRAIN = False
 
-# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-# GOVERNMENT - 14 Ministers System
-# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# Global flags will be managed by the Container and instance state
+
+# Ensure MinisterType is available for type hints and runtime
 try:
-    from government.ministers_activation import MinistersActivationSystem, MinisterType
-    HAS_GOVERNMENT = True
-except ImportError as e:
-    logging.warning(f"⚠️ Government system not available: {e}")
-    HAS_GOVERNMENT = False
-    # Fallback: define MinisterType as a simple enum
+    from src.government.ministers_activation import MinisterType
+except ImportError:
     from enum import Enum
     class MinisterType(str, Enum):
         EDUCATION = "education"
@@ -78,25 +48,7 @@ except ImportError as e:
         RESOURCES = "resources"
         FINANCE = "finance"
 
-# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-# UNIFIED COGNITION - Decision + Learning + Memory
-# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-try:
-    from integration.unified_cognition import get_cognition_system
-    HAS_UNIFIED_COGNITION = True
-except ImportError as e:
-    logging.warning(f"⚠️ Unified Cognition not available: {e}")
-    HAS_UNIFIED_COGNITION = False
 
-# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-# DEEP COGNITION ENGINE - Scoring & Auditing
-# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-try:
-    from audit.deep_cognition_engine import DeepCognitionEngine
-    HAS_AUDIT_ENGINE = True
-except ImportError as e:
-    logging.warning(f"⚠️ Deep Cognition Audit Engine not available: {e}")
-    HAS_AUDIT_ENGINE = False
 
 
 logging.basicConfig(level=logging.INFO)
@@ -171,115 +123,89 @@ class UnifiedBrainHub:
 
         self.enable_gpu = enable_gpu
         self.is_ready = False
-
-        # ═══════════════════════════════════════════════════════════════
-        # INITIALIZE DEEP COGNITION v1.2 Lite (97.5% TRANSCENDENT)
-        # ═══════════════════════════════════════════════════════════════
-
-        self.scene_understanding = None
-        self.material_analyzer = None
-        self.meta_confidence = None
-        self.semantic_intent = None
-        self.vision_reasoning_sync = None
         self.cognition_score = 0.0
-
-        if HAS_DEEP_COGNITION:
-            try:
-                logger.info("🔬 Loading Deep Cognition v1.2 Lite...")
-                self.scene_understanding = SceneUnderstandingEngine()
-                self.material_analyzer = MaterialAnalyzer()
-                self.meta_confidence = MetaConfidenceCalibrator()
-                self.semantic_intent = SemanticIntentAnalyzer()
-                self.vision_reasoning_sync = VisionReasoningSynchronizer()
-
-                # Calculate cognition score
-                if HAS_AUDIT_ENGINE:
-                    try:
-                        engine = DeepCognitionEngine()
-                        report = engine.run_full_audit()
-                        self.cognition_score = report.overall_score
-                        logger.info(f"   ✅ Deep Cognition Score: {self.cognition_score:.1%} ({report.cognition_level.value})")
-                    except Exception as e:
-                        logger.warning(f"   ⚠️ Could not run audit: {e}")
-                        self.cognition_score = 0.975  # Known v1.2 Lite score
-                        logger.info(f"   ✅ Deep Cognition v1.2 Lite: {self.cognition_score:.1%}")
-                else:
-                    self.cognition_score = 0.975  # Known v1.2 Lite score
-                    logger.info(f"   ✅ Deep Cognition v1.2 Lite: {self.cognition_score:.1%}")
-
-            except Exception as e:
-                logger.error(f"   ❌ Deep Cognition initialization failed: {e}")
-        else:
-            logger.warning("   ⚠️ Deep Cognition v1.2 not available")
-
-        # ═══════════════════════════════════════════════════════════════
-        # INITIALIZE AGENT BRAIN
-        # ═══════════════════════════════════════════════════════════════
-
-        self.agent_brain = None
-
-        if HAS_AGENT_BRAIN:
-            try:
-                logger.info("🤖 Loading Agent Brain...")
-                self.agent_brain = AgentBrain()
-                logger.info("   ✅ Agent Brain ready")
-            except Exception as e:
-                logger.error(f"   ❌ Agent Brain initialization failed: {e}")
-        else:
-            logger.warning("   ⚠️ Agent Brain not available")
-
-        # ═══════════════════════════════════════════════════════════════
-        # INITIALIZE GOVERNMENT (14 Ministers)
-        # ═══════════════════════════════════════════════════════════════
-
-        self.ministers_system = None
         self.active_ministers_count = 0
-
-        if HAS_GOVERNMENT:
-            try:
-                logger.info("🏛️ Activating Government System...")
-                self.ministers_system = MinistersActivationSystem(brain_hub=self)
-                self.ministers_system.activate_all()
-                self.active_ministers_count = len(self.ministers_system.active_ministers)
-                logger.info(f"   ✅ {self.active_ministers_count} Ministers activated")
-            except Exception as e:
-                logger.error(f"   ❌ Government initialization failed: {e}")
-        else:
-            logger.warning("   ⚠️ Government system not available")
-
-        # ═══════════════════════════════════════════════════════════════
-        # INITIALIZE UNIFIED COGNITION
-        # ═══════════════════════════════════════════════════════════════
-
-        self.unified_cognition = None
-
-        if HAS_UNIFIED_COGNITION:
-            try:
-                logger.info("🧩 Loading Unified Cognition...")
-                self.unified_cognition = get_cognition_system()
-                logger.info("   ✅ Unified Cognition ready")
-            except Exception as e:
-                logger.error(f"   ❌ Unified Cognition initialization failed: {e}")
-        else:
-            logger.warning("   ⚠️ Unified Cognition not available")
-
-        # ═══════════════════════════════════════════════════════════════
-        # FINALIZE
-        # ═══════════════════════════════════════════════════════════════
-
-        self.is_ready = True
-
-        logger.info("=" * 70)
-        logger.info("✅ UNIFIED BRAIN HUB - READY")
-        logger.info(f"   Deep Cognition: {'✅' if HAS_DEEP_COGNITION else '❌'} ({self.cognition_score:.1%})")
-        logger.info(f"   Agent Brain: {'✅' if self.agent_brain else '❌'}")
-        logger.info(f"   Government: {'✅' if self.ministers_system else '❌'} ({self.active_ministers_count} ministers)")
-        logger.info(f"   Unified Cognition: {'✅' if self.unified_cognition else '❌'}")
-        logger.info("=" * 70)
+        
+        # Initialize subsystems via DI
+        self._initialize_subsystems()
 
         # Statistics
         self.total_requests = 0
         self.successful_requests = 0
+
+    def _initialize_subsystems(self):
+        """Initialize and register all subsystems"""
+        logger.info("🔧 Initializing subsystems...")
+
+        # 1. Deep Cognition
+        try:
+            from src.vision.scene_understanding import SceneUnderstandingEngine
+            from src.vision.material_analyzer import MaterialAnalyzer
+            from src.reasoning.meta_confidence import MetaConfidenceCalibrator
+            from src.nlp.semantic_intent_analyzer import SemanticIntentAnalyzer
+            from src.integration.vision_reasoning_sync import VisionReasoningSynchronizer
+            
+            self.scene_understanding = SceneUnderstandingEngine()
+            self.material_analyzer = MaterialAnalyzer()
+            self.meta_confidence = MetaConfidenceCalibrator()
+            self.semantic_intent = SemanticIntentAnalyzer()
+            self.vision_reasoning_sync = VisionReasoningSynchronizer()
+            
+            Container.register("scene_understanding", self.scene_understanding)
+            Container.register("semantic_intent", self.semantic_intent)
+            
+            self.has_deep_cognition = True
+            self.cognition_score = 0.975
+            logger.info("   ✅ Deep Cognition v1.2 Lite loaded")
+        except ImportError as e:
+            logger.warning(f"   ⚠️ Deep Cognition not available: {e}")
+            self.has_deep_cognition = False
+            self.scene_understanding = None
+            self.semantic_intent = None
+
+        # 2. Agent Brain
+        try:
+            from src.agent.brain import AgentBrain
+            self.agent_brain = AgentBrain()
+            Container.register("agent_brain", self.agent_brain)
+            self.has_agent_brain = True
+            logger.info("   ✅ Agent Brain loaded")
+        except ImportError as e:
+            logger.warning(f"   ⚠️ Agent Brain not available: {e}")
+            self.has_agent_brain = False
+            self.agent_brain = None
+
+        # 3. Government
+        try:
+            from src.government.ministers_activation import MinistersActivationSystem, MinisterType
+            self.ministers_system = MinistersActivationSystem(brain_hub=self)
+            self.ministers_system.activate_all()
+            self.active_ministers_count = len(self.ministers_system.active_ministers)
+            Container.register("ministers_system", self.ministers_system)
+            self.has_government = True
+            logger.info(f"   ✅ Government loaded ({self.active_ministers_count} ministers)")
+        except ImportError as e:
+            logger.warning(f"   ⚠️ Government system not available: {e}")
+            self.has_government = False
+            self.ministers_system = None
+            
+            # MinisterType is already handled at module level
+            pass
+
+        # 4. Unified Cognition
+        try:
+            from src.integration.unified_cognition import get_cognition_system
+            self.unified_cognition = get_cognition_system()
+            Container.register("unified_cognition", self.unified_cognition)
+            self.has_unified_cognition = True
+            logger.info("   ✅ Unified Cognition loaded")
+        except ImportError as e:
+            logger.warning(f"   ⚠️ Unified Cognition not available: {e}")
+            self.has_unified_cognition = False
+            self.unified_cognition = None
+
+        self.is_ready = True
+        logger.info("✅ Subsystems initialization complete")
 
     def process_request(self, request: str, context: Optional[Dict] = None) -> ProcessingResult:
         """
@@ -335,28 +261,8 @@ class UnifiedBrainHub:
                 confidence = result['confidence']
 
             elif request_type == "minister_task" and self.ministers_system:
-                # Delegate to appropriate minister (async call)
-                import asyncio
-                try:
-                    # Try to get existing event loop
-                    loop = asyncio.get_event_loop()
-                    if loop.is_running():
-                        # Create a new task and wait for it synchronously
-                        import concurrent.futures
-                        with concurrent.futures.ThreadPoolExecutor() as executor:
-                            future = executor.submit(
-                                lambda: asyncio.run(self._delegate_to_minister(request, context))
-                            )
-                            result = future.result(timeout=30)
-                    else:
-                        # No running loop, safe to use asyncio.run()
-                        result = asyncio.run(self._delegate_to_minister(request, context))
-                except RuntimeError:
-                    # Fallback: create a new event loop
-                    loop = asyncio.new_event_loop()
-                    asyncio.set_event_loop(loop)
-                    result = loop.run_until_complete(self._delegate_to_minister(request, context))
-                    loop.close()
+                # Delegate to appropriate minister (async call handled safely)
+                result = self._delegate_to_minister_sync(request, context)
 
                 response_text = result['response']
                 minister_used = result['minister']
@@ -532,7 +438,7 @@ class UnifiedBrainHub:
         }
 
     async def _delegate_to_minister(self, request: str, context: Dict) -> Dict:
-        """تفويض مهمة لوزير"""
+        """تفويض مهمة لوزير (async version)"""
         # Determine which minister to use
         minister_type = self._select_minister(request)
 
@@ -557,6 +463,51 @@ class UnifiedBrainHub:
             'minister': result.get('minister'),
             'confidence': 0.9
         }
+
+    def _delegate_to_minister_sync(self, request: str, context: Dict) -> Dict:
+        """Safe synchronous wrapper for async minister delegation"""
+        import asyncio
+        import sys
+
+        try:
+            # Try to get the current event loop
+            try:
+                loop = asyncio.get_running_loop()
+                # We're already in an async context - this shouldn't happen
+                # but if it does, we need to handle it
+                logger.warning("⚠️ Called sync wrapper from async context")
+                # Create a task and return a placeholder
+                return {
+                    'response': "Minister delegation requires async context",
+                    'minister': None,
+                    'confidence': 0.0
+                }
+            except RuntimeError:
+                # No running loop - this is the expected case
+                pass
+
+            # Safe to create and run a new event loop
+            try:
+                # Try to use existing event loop if available
+                loop = asyncio.get_event_loop()
+                if loop.is_closed():
+                    loop = asyncio.new_event_loop()
+                    asyncio.set_event_loop(loop)
+            except RuntimeError:
+                loop = asyncio.new_event_loop()
+                asyncio.set_event_loop(loop)
+
+            # Run the async function
+            result = loop.run_until_complete(self._delegate_to_minister(request, context))
+            return result
+
+        except Exception as e:
+            logger.error(f"❌ Error delegating to minister: {e}", exc_info=True)
+            return {
+                'response': f"Minister delegation failed: {str(e)}",
+                'minister': None,
+                'confidence': 0.0
+            }
 
     def _select_minister(self, request: str) -> Optional[MinisterType]:
         """اختيار الوزير المناسب بناءً على نظام نقاط"""

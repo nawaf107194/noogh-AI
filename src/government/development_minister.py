@@ -199,7 +199,8 @@ class DevelopmentMinister(BaseMinister):
         auto_fix_enabled: bool = False,
         max_complexity: int = 10,
         min_documentation_coverage: float = 60.0,
-        project_root: Optional[Path] = None
+        project_root: Optional[Path] = None,
+        brain_hub: Any = None
     ):
         """
         Initialize Development Minister
@@ -258,7 +259,8 @@ class DevelopmentMinister(BaseMinister):
             name="Development Minister",
             minister_type=MinisterType.DEVELOPMENT,
             authorities=authorities,
-            verbose=verbose
+            verbose=verbose,
+            brain_hub=brain_hub
         )
 
         if verbose:
@@ -716,16 +718,21 @@ async def {endpoint_name}({parameters}):
         """مرحلة الاختبار"""
         print("Running test stage...")
         try:
-            result = subprocess.run(
-                ["pytest"],
-                capture_output=True,
-                text=True,
+            process = await asyncio.create_subprocess_exec(
+                "pytest",
+                stdout=asyncio.subprocess.PIPE,
+                stderr=asyncio.subprocess.PIPE,
                 cwd=self.project_root
             )
-            if result.returncode != 0:
-                print(f"Pytest failed:\n{result.stdout}\n{result.stderr}")
+            stdout, stderr = await process.communicate()
+
+            if process.returncode != 0:
+                print(f"Pytest failed:\n{stdout.decode()}\n{stderr.decode()}")
                 return False
+            
             print("Pytest completed successfully.")
+            if self.verbose:
+                print(stdout.decode())
             return True
         except FileNotFoundError:
             print("Pytest not found. Please install it.")

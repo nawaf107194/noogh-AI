@@ -22,7 +22,7 @@ class PrimeMinister(BaseMinister):
     رئيس الوزراء - المسؤول عن التنسيق العام والقيادة الاستراتيجية
     \"\"\"
     
-    def __init__(self, verbose: bool = True):
+    def __init__(self, verbose: bool = True, brain_hub: Any = None):
         super().__init__(
             minister_type=MinisterType.STRATEGY,
             name="Prime Minister",
@@ -30,6 +30,8 @@ class PrimeMinister(BaseMinister):
             verbose=verbose,
             specialty="التنسيق والقيادة الاستراتيجية",
             description="المسؤول عن التنسيق العام بين الوزراء واتخاذ القرارات الاستراتيجية"
+        ,
+            brain_hub=brain_hub
         )
         
         self.cabinet_ministers: Dict[MinisterType, BaseMinister] = {}

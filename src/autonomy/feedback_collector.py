@@ -426,8 +426,26 @@ class FeedbackCollector:
 # Global feedback collector instance
 _feedback_collector = None
 
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# DI Container Integration
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
 def get_feedback_collector() -> FeedbackCollector:
-    """Get global feedback collector instance"""
+    """
+    Get global feedback collector instance from DI container
+    
+    Returns:
+        FeedbackCollector instance (singleton)
+    """
+    try:
+        from src.core.di import Container
+        collector = Container.resolve("feedback_collector")
+        if collector is not None:
+            return collector
+    except ImportError:
+        pass
+    
+    # Fallback to manual singleton for backward compatibility
     global _feedback_collector
     if _feedback_collector is None:
         _feedback_collector = FeedbackCollector()

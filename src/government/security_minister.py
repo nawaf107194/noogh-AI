@@ -179,7 +179,8 @@ class SecurityMinister(BaseMinister):
         verbose: bool = True,
         enable_auto_blocking: bool = True,
         enable_rate_limiting: bool = True,
-        max_incidents_history: int = 1000
+        max_incidents_history: int = 1000,
+        brain_hub: Any = None
     ):
         """
         Args:
@@ -217,7 +218,8 @@ class SecurityMinister(BaseMinister):
             verbose=verbose,
             specialty="Cybersecurity & Threat Management",
             description="Protects the system from threats, manages access control, and ensures security",
-            expertise_level=0.95
+            expertise_level=0.95,
+            brain_hub=brain_hub
         )
 
         # Security configuration

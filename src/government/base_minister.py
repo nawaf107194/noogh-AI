@@ -12,10 +12,6 @@ Features:
 - ✅ Communication with President
 """
 
-import sys
-from pathlib import Path
-sys.path.insert(0, str(Path(__file__).parent.parent.parent))
-
 import asyncio
 import logging
 from abc import ABC, abstractmethod
@@ -185,7 +181,8 @@ class BaseMinister(ABC):
         verbose: bool = True,
         specialty: str = None,
         description: str = None,
-        expertise_level: float = 0.85
+        expertise_level: float = 0.85,
+        brain_hub: Any = None
     ):
         """
         Args:
@@ -197,6 +194,7 @@ class BaseMinister(ABC):
             specialty: التخصص
             description: الوصف
             expertise_level: مستوى الخبرة (0-1)
+            brain_hub: Reference to UnifiedBrainHub for DI
         """
         self.minister_type = minister_type
         self.name = name
@@ -206,6 +204,7 @@ class BaseMinister(ABC):
         self.description = description or f"Minister of {name}"
         self.expertise_level = expertise_level
         self.verbose = verbose
+        self.brain_hub = brain_hub
 
         # إدارة المهام
         self.active_tasks: Dict[str, Dict[str, Any]] = {}

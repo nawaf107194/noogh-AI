@@ -1,0 +1,219 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: noogh-api
+  namespace: noogh-system
+  labels:
+    app: noogh-api
+    version: v1.0.0
+    component: api
+spec:
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: noogh-api
+  template:
+    metadata:
+      labels:
+        app: noogh-api
+        version: v1.0.0
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8000"
+        prometheus.io/path: "/metrics"
+    spec:
+      # Security context
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        fsGroup: 1000
+
+      # Init containers
+      initContainers:
+        - name: wait-for-data
+          image: busybox:1.35
+          command: ['sh', '-c', 'mkdir -p /app/data /app/models /app/logs && chown -R 1000:1000 /app']
+          volumeMounts:
+            - name: data
+              mountPath: /app/data
+            - name: models
+              mountPath: /app/models
+            - name: logs
+              mountPath: /app/logs
+
+      containers:
+        - name: api
+          image: noogh/unified-system:latest
+          imagePullPolicy: Always
+
+          ports:
+            - name: http
+              containerPort: 8000
+              protocol: TCP
+
+          env:
+            - name: PYTHONUNBUFFERED
+              value: "1"
+            - name: API_HOST
+              value: "0.0.0.0"
+            - name: API_PORT
+              value: "8000"
+            - name: LOG_LEVEL
+              valueFrom:
+                configMapKeyRef:
+                  name: noogh-config
+                  key: log_level
+            - name: HF_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: noogh-secrets
+                  key: hf_token
+                  optional: true
+            - name: OPENAI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: noogh-secrets
+                  key: openai_api_key
+                  optional: true
+
+          # Resource limits
+          resources:
+            requests:
+              memory: "2Gi"
+              cpu: "1000m"
+            limits:
+              memory: "4Gi"
+              cpu: "2000m"
+
+          # Health checks
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 60
+            periodSeconds: 30
+            timeoutSeconds: 10
+            failureThreshold: 3
+
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+
+          startupProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 0
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 30
+
+          # Volume mounts
+          volumeMounts:
+            - name: data
+              mountPath: /app/data
+            - name: models
+              mountPath: /app/models
+            - name: logs
+              mountPath: /app/logs
+            - name: config
+              mountPath: /app/config
+              readOnly: true
+
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: noogh-data-pvc
+        - name: models
+          persistentVolumeClaim:
+            claimName: noogh-models-pvc
+        - name: logs
+          emptyDir: {}
+        - name: config
+          configMap:
+            name: noogh-config
+
+      # Pod affinity (spread across nodes)
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app: noogh-api
+                topologyKey: kubernetes.io/hostname
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: noogh-mcp
+  namespace: noogh-system
+  labels:
+    app: noogh-mcp
+    version: v1.0.0
+    component: mcp
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: noogh-mcp
+  template:
+    metadata:
+      labels:
+        app: noogh-mcp
+        version: v1.0.0
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        fsGroup: 1000
+
+      containers:
+        - name: mcp
+          image: noogh/unified-system:latest
+          imagePullPolicy: Always
+          command: ["python", "scripts/mcp_server.py"]
+
+          ports:
+            - name: mcp
+              containerPort: 8001
+              protocol: TCP
+
+          env:
+            - name: MCP_PORT
+              value: "8001"
+            - name: PYTHONUNBUFFERED
+              value: "1"
+
+          resources:
+            requests:
+              memory: "1Gi"
+              cpu: "500m"
+            limits:
+              memory: "2Gi"
+              cpu: "1000m"
+
+          volumeMounts:
+            - name: data
+              mountPath: /app/data
+            - name: logs
+              mountPath: /app/logs
+
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: noogh-data-pvc
+        - name: logs
+          emptyDir: {}

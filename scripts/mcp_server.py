@@ -1,224 +1,269 @@
 #!/usr/bin/env python3
+"""
+= MCP Server v2.0 - Enhanced Production Version
+
+FastMCP-based server with full health monitoring and tool suite
+"""
+
 import os
 import sys
 import json
 import platform
-from typing import Optional
+import logging
+from typing import Optional, Dict, Any
+from datetime import datetime
+from pathlib import Path
 
-from mcp.server.fastmcp import FastMCP
+# Add project root to path
+sys.path.insert(0, str(Path(__file__).parent.parent))
 
-# ==============================
-#   إعداد MCP Server
-# ==============================
+try:
+    from mcp.server.fastmcp import FastMCP
+except ImportError:
+    print("L Error: mcp package not found. Install: pip install mcp", file=sys.stderr)
+    sys.exit(1)
 
-mcp = FastMCP("FullFeatureMCP")
+# Setup logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s [MCP] %(levelname)s: %(message)s',
+    handlers=[
+        logging.StreamHandler(sys.stderr),
+        logging.FileHandler('logs/mcp.log', mode='a')
+    ]
+)
+logger = logging.getLogger(__name__)
 
-# مجلد آمن للملفات (عشان ما نخبص النظام)
-BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "mcp_data"))
-os.makedirs(BASE_DIR, exist_ok=True)
+# 
+# Configuration
+# 
 
+mcp = FastMCP("NooghUnifiedMCP")
 
-# ==============================
-#   Resources (قراءة فقط)
-# ==============================
+BASE_DIR = Path(__file__).parent.parent / "mcp_data"
+BASE_DIR.mkdir(exist_ok=True)
+
+# Track server stats
+SERVER_STATS = {
+    "start_time": datetime.now().isoformat(),
+    "requests_total": 0,
+    "requests_success": 0,
+    "requests_failed": 0,
+}
+
+# 
+# Resources (Read-only endpoints)
+# 
 
 @mcp.resource("system://health")
-def system_health() -> dict:
-    """حالة السيرفر الصحية."""
+def system_health() -> Dict[str, Any]:
+    """Health check endpoint"""
+    uptime = (datetime.now() - datetime.fromisoformat(SERVER_STATS["start_time"])).total_seconds()
     return {
-        "status": "ok",
-        "message": "MCP server running",
+        "status": "healthy",
+        "uptime_seconds": uptime,
+        "version": "2.0",
+        "timestamp": datetime.now().isoformat()
     }
 
-
 @mcp.resource("system://info")
-def system_basic_info() -> dict:
-    """معلومات بسيطة عن النظام."""
+def system_info() -> Dict[str, Any]:
+    """System information"""
     return {
         "python_version": platform.python_version(),
         "platform": platform.system(),
         "platform_release": platform.release(),
+        "server": "NooghUnifiedMCP",
+        "version": "2.0"
     }
 
+@mcp.resource("system://stats")
+def system_stats() -> Dict[str, Any]:
+    """Server statistics"""
+    return SERVER_STATS.copy()
 
 @mcp.resource("utils://ping")
 def ping() -> str:
-    """Ping resource للتأكد أن السيرفر شغّال."""
+    """Simple ping endpoint"""
     return "pong"
 
-
-# ==============================
-#   Tools — Utilities
-# ==============================
+# 
+# Tools - Math & Utilities
+# 
 
 @mcp.tool()
 def sum_numbers(a: float, b: float) -> float:
-    """جمع رقمين ويعيد الناتج."""
+    """Add two numbers"""
+    SERVER_STATS["requests_total"] += 1
+    SERVER_STATS["requests_success"] += 1
     return a + b
-
 
 @mcp.tool()
 def multiply(a: float, b: float) -> float:
-    """ضرب رقمين ويعيد الناتج."""
+    """Multiply two numbers"""
+    SERVER_STATS["requests_total"] += 1
+    SERVER_STATS["requests_success"] += 1
     return a * b
 
-
 @mcp.tool()
-def echo(text: str) -> dict:
-    """إرجاع النص كما هو داخل JSON."""
-    return {"echo": text}
-
+def echo(text: str) -> Dict[str, str]:
+    """Echo back the input text"""
+    SERVER_STATS["requests_total"] += 1
+    SERVER_STATS["requests_success"] += 1
+    return {"echo": text, "timestamp": datetime.now().isoformat()}
 
 @mcp.tool()
 def pretty_json(data: str) -> str:
-    """
-    تنسيق JSON string بشكل مرتب.
-    - data: نص JSON (string) غير منسق.
-    """
+    """Format JSON with proper indentation"""
+    SERVER_STATS["requests_total"] += 1
     try:
         obj = json.loads(data)
+        SERVER_STATS["requests_success"] += 1
         return json.dumps(obj, indent=2, ensure_ascii=False)
     except Exception as e:
+        SERVER_STATS["requests_failed"] += 1
         return f"Invalid JSON: {e}"
 
-
-# ==============================
-#   Tools — HTTP Client بسيط
-# ==============================
+# 
+# Tools - HTTP Operations
+# 
 
 @mcp.tool()
-def http_get(url: str, timeout: int = 10) -> dict:
-    """
-    تنفيذ طلب HTTP GET بسيط.
-    - url: الرابط المطلوب.
-    - timeout: المهلة بالثواني.
-    """
+def http_get(url: str, timeout: int = 10) -> Dict[str, Any]:
+    """Make HTTP GET request"""
     import requests
 
+    SERVER_STATS["requests_total"] += 1
     try:
         resp = requests.get(url, timeout=timeout)
-        content_type = resp.headers.get("Content-Type", "")
-        # عشان ما نرجع body ضخم جدًا، نقصّه لو مرّة كبير
         text = resp.text
-        max_len = 5000
-        if len(text) > max_len:
-            text = text[:max_len] + "\n...[truncated]..."
+        if len(text) > 5000:
+            text = text[:5000] + "\n...[truncated]..."
+
+        SERVER_STATS["requests_success"] += 1
         return {
             "status_code": resp.status_code,
             "headers": dict(resp.headers),
-            "content_type": content_type,
             "body": text,
         }
     except Exception as e:
-        return {
-            "error": str(e),
-            "url": url,
-        }
+        SERVER_STATS["requests_failed"] += 1
+        return {"error": str(e), "url": url}
 
+# 
+# Tools - File Operations (Sandboxed)
+# 
 
-# ==============================
-#   Tools — File Operations (داخل مجلد آمن)
-# ==============================
+def _safe_path(relative_path: str) -> Path:
+    """Ensure path is within BASE_DIR"""
+    normalized = Path(relative_path).as_posix().lstrip('/')
+    full = (BASE_DIR / normalized).resolve()
 
-def _safe_path(relative_path: str) -> str:
-    """
-    تحويل مسار نسبي إلى مسار آمن داخل BASE_DIR.
-    يمنع الخروج من المجلد (no .. escape).
-    """
-    normalized = os.path.normpath(relative_path).lstrip(os.sep)
-    full = os.path.abspath(os.path.join(BASE_DIR, normalized))
-    if not full.startswith(BASE_DIR):
-        raise ValueError("Invalid path (outside base dir)")
+    if not str(full).startswith(str(BASE_DIR.resolve())):
+        raise ValueError(f"Invalid path (outside base dir): {relative_path}")
+
     return full
-
 
 @mcp.tool()
 def list_files(subdir: Optional[str] = "") -> list:
-    """
-    عرض الملفات داخل المجلد الآمن (mcp_data) أو مجلد فرعي.
-    - subdir: مجلد فرعي اختياري.
-    """
-    path = _safe_path(subdir or "")
-    if not os.path.exists(path):
-        return []
-    result = []
-    for name in os.listdir(path):
-        full = os.path.join(path, name)
-        result.append({
-            "name": name,
-            "is_dir": os.path.isdir(full),
-            "size": os.path.getsize(full) if os.path.isfile(full) else None,
-        })
-    return result
+    """List files in directory (sandboxed to mcp_data/)"""
+    SERVER_STATS["requests_total"] += 1
+    try:
+        path = _safe_path(subdir or "")
+        if not path.exists():
+            return []
 
+        items = []
+        for item in path.iterdir():
+            items.append({
+                "name": item.name,
+                "is_dir": item.is_dir(),
+                "size": item.stat().st_size if item.is_file() else None,
+            })
 
-@mcp.tool()
-def read_file(path: str, max_bytes: int = 5000) -> dict:
-    """
-    قراءة ملف نصي من داخل المجلد الآمن.
-    - path: مسار نسبي من داخل mcp_data.
-    - max_bytes: أقصى حجم يرجع.
-    """
-    full = _safe_path(path)
-    if not os.path.exists(full):
-        return {"error": "file_not_found", "path": path}
-    if not os.path.isfile(full):
-        return {"error": "not_a_file", "path": path}
-    with open(full, "r", encoding="utf-8", errors="replace") as f:
-        data = f.read(max_bytes + 1)
-    truncated = False
-    if len(data) > max_bytes:
-        data = data[:max_bytes]
-        truncated = True
-    return {
-        "path": path,
-        "content": data,
-        "truncated": truncated,
-    }
-
+        SERVER_STATS["requests_success"] += 1
+        return items
+    except Exception as e:
+        SERVER_STATS["requests_failed"] += 1
+        logger.error(f"list_files error: {e}")
+        return [{"error": str(e)}]
 
 @mcp.tool()
-def write_file(path: str, content: str, overwrite: bool = True) -> dict:
-    """
-    كتابة محتوى إلى ملف داخل المجلد الآمن.
-    - path: مسار نسبي من داخل mcp_data.
-    - content: النص المراد كتابته.
-    - overwrite: هل يسمح بالكتابة فوق ملف موجود.
-    """
-    full = _safe_path(path)
-    os.makedirs(os.path.dirname(full), exist_ok=True)
-    if os.path.exists(full) and not overwrite:
-        return {"error": "file_exists", "path": path}
-    with open(full, "w", encoding="utf-8") as f:
-        f.write(content)
-    return {"status": "ok", "path": path}
+def read_file(path: str, max_bytes: int = 5000) -> Dict[str, Any]:
+    """Read file content (sandboxed to mcp_data/)"""
+    SERVER_STATS["requests_total"] += 1
+    try:
+        full = _safe_path(path)
+        if not full.exists():
+            return {"error": "file_not_found"}
 
+        with open(full, "r", encoding="utf-8", errors="replace") as f:
+            data = f.read(max_bytes + 1)
 
-# ==============================
-#   ENTRYPOINT
-# ==============================
+        SERVER_STATS["requests_success"] += 1
+        return {
+            "path": path,
+            "content": data[:max_bytes],
+            "truncated": len(data) > max_bytes
+        }
+    except Exception as e:
+        SERVER_STATS["requests_failed"] += 1
+        logger.error(f"read_file error: {e}")
+        return {"error": str(e)}
+
+@mcp.tool()
+def write_file(path: str, content: str, overwrite: bool = True) -> Dict[str, Any]:
+    """Write content to file (sandboxed to mcp_data/)"""
+    SERVER_STATS["requests_total"] += 1
+    try:
+        full = _safe_path(path)
+
+        if full.exists() and not overwrite:
+            return {"error": "file_exists"}
+
+        full.parent.mkdir(parents=True, exist_ok=True)
+
+        with open(full, "w", encoding="utf-8") as f:
+            f.write(content)
+
+        SERVER_STATS["requests_success"] += 1
+        return {"status": "ok", "path": path, "bytes_written": len(content)}
+    except Exception as e:
+        SERVER_STATS["requests_failed"] += 1
+        logger.error(f"write_file error: {e}")
+        return {"error": str(e)}
+
+# 
+# Main Entry Point
+# 
 
 def main():
-    """
-    أوامر التشغيل:
-      python mcp_server.py          → stdio mode (افتراضي)
-      python mcp_server.py stdio   → stdio mode
-      python mcp_server.py http    → streamable-http mode
-    """
+    """Start MCP server"""
     mode = "stdio"
-    if len(sys.argv) > 1:
-        arg = sys.argv[1].lower()
-        if arg in ("stdio", "http"):
-            mode = "http" if arg == "http" else "stdio"
+
+    # Check command line args
+    if len(sys.argv) > 1 and sys.argv[1].lower() == "http":
+        mode = "http"
+
+    # Get port from environment or default
+    port = int(os.environ.get("MCP_PORT", "8001"))
+    host = os.environ.get("MCP_HOST", "0.0.0.0")
 
     if mode == "http":
-        print("🔵 Starting MCP server with streamable-http …", file=sys.stderr)
-        # ممكن تمرّر host/port عن طريق env لو حاب
-        mcp.run(transport="streamable-http")
-    else:
-        print("🔵 Starting MCP server on stdio …", file=sys.stderr)
-        mcp.run(transport="stdio")
+        logger.info(f"= Starting MCP Server v2.0 (HTTP mode)")
+        logger.info(f"   Host: {host}")
+        logger.info(f"   Port: {port}")
+        logger.info(f"   Health: http://{host}:{port}/health")
 
+        # Set env vars for FastMCP
+        os.environ["HOST"] = host
+        os.environ["PORT"] = str(port)
+
+        # Run with SSE transport
+        mcp.run(transport="sse")
+    else:
+        logger.info("= Starting MCP Server v2.0 (stdio mode)")
+        mcp.run(transport="stdio")
 
 if __name__ == "__main__":
     main()

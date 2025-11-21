@@ -21,7 +21,7 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).parent.parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
-from knowledge_kernel_v4_1 import create_knowledge_kernel
+from knowledge.kernel import create_knowledge_kernel
 
 # Import validators for input sanitization
 try:

@@ -29,7 +29,7 @@ import logging
 
 # Import Unified Brain Hub
 try:
-    from integration.unified_brain_hub import get_brain_hub, BrainHubStatus
+    from src.integration.unified_brain_hub import get_brain_hub, BrainHubStatus
     HAS_BRAIN_HUB = True
 except ImportError as e:
     logging.warning(f"⚠️ Brain Hub not available: {e}")
@@ -37,7 +37,7 @@ except ImportError as e:
 
 # Import Ministers
 try:
-    from government.minister_types_universal import MinisterType, MINISTER_INFO
+    from src.government.minister_types_universal import MinisterType, MINISTER_INFO
     HAS_MINISTER_TYPES = True
 except ImportError as e:
     logging.warning(f"⚠️ Minister types not available: {e}")

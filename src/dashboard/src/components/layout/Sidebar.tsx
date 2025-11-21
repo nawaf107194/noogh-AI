@@ -1,10 +1,12 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Users, TrendingUp, Settings, FileText, Moon, Sun } from 'lucide-react';
+import { Home, Users, TrendingUp, Settings, FileText, Moon, Sun, Bot, Zap } from 'lucide-react';
 import { useTheme } from '../../contexts/ThemeContext';
 
 const navItems = [
   { path: '/', icon: Home, label: 'Dashboard' },
   { path: '/ministers', icon: Users, label: 'Ministers' },
+  { path: '/automation', icon: Zap, label: 'Automation' },
+  { path: '/chat', icon: Bot, label: 'Chat' },
   { path: '/trading', icon: TrendingUp, label: 'Trading' },
   { path: '/reports', icon: FileText, label: 'Reports' },
   { path: '/settings', icon: Settings, label: 'Settings' },

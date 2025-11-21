@@ -371,11 +371,26 @@ class ModelManager:
         return stats
 
 
-# Global model manager instance
-_model_manager = None
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# DI Container Integration
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 def get_model_manager() -> ModelManager:
-    """Get global model manager instance"""
+    """
+    Get global model manager instance from DI container
+    
+    Returns:
+        ModelManager instance (singleton)
+    """
+    try:
+        from src.core.di import Container
+        manager = Container.resolve("model_manager")
+        if manager is not None:
+            return manager
+    except ImportError:
+        pass
+    
+    # Fallback to manual singleton for backward compatibility
     global _model_manager
     if _model_manager is None:
         _model_manager = ModelManager()

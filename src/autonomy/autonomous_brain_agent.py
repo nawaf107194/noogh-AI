@@ -18,26 +18,22 @@ Version: 1.0.0
 Date: 2025-11-10
 """
 
-import sys
-from pathlib import Path
-PROJECT_ROOT = Path(__file__).parent.parent.parent
-sys.path.insert(0, str(PROJECT_ROOT))
-
 import logging
 import asyncio
 from datetime import datetime, timedelta
 from typing import Dict, List, Any, Optional
 import json
+from pathlib import Path
 
 # Import unified brain API
 from src.integration.brain_integration_layer import create_unified_brain
 
 # Import autonomous systems
 from src.monitoring.resource_monitor import ResourceMonitor
-from training.training_need_detector import TrainingNeedDetector
-from data.auto_data_collector import AutoDataCollector
-from finance.finance_system import FinanceSystem, CostCategory, RevenueSource
-from training.local_trainer import LocalModelTrainer
+from src.training.training_need_detector import TrainingNeedDetector
+from src.data_collection.auto_data_collector import AutoDataCollector
+from src.finance.finance_system import FinanceSystem, CostCategory
+from src.training.local_trainer import LocalModelTrainer
 
 logging.basicConfig(
     level=logging.INFO,

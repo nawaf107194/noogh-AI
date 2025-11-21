@@ -92,13 +92,15 @@ class EducationMinister(BaseMinister):
         self,
         verbose: bool = True,
         enable_vision: bool = True,
-        enable_web_scraping: bool = True
+        enable_web_scraping: bool = True,
+        brain_hub: Any = None
     ):
         """
         Args:
             verbose: عرض التفاصيل
             enable_vision: تفعيل الرؤية الحاسوبية
             enable_web_scraping: تفعيل استخراج محتوى المواقع
+            brain_hub: Reference to UnifiedBrainHub
         """
         # Authorities - الصلاحيات
         authorities = [
@@ -130,7 +132,8 @@ class EducationMinister(BaseMinister):
             verbose=verbose,
             specialty="Educational Content Management & Curriculum Development",
             description="Manages learning resources, extracts content, and generates training curricula",
-            expertise_level=0.90
+            expertise_level=0.90,
+            brain_hub=brain_hub
         )
 
         # Initialize vision modules

@@ -26,7 +26,7 @@ import logging
 
 # Education Minister
 try:
-    from government.education_minister import (
+    from src.government.education_minister import (
         EducationMinister,
         ContentType,
         LessonDifficulty,

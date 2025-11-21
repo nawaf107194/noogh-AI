@@ -145,12 +145,26 @@ class CacheManager:
         }
 
 
-# Global cache instance
-_cache_manager = None
-
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# DI Container Integration
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 def get_cache() -> CacheManager:
-    """Get global cache manager instance"""
+    """
+    Get cache manager instance from DI container
+    
+    Returns:
+        CacheManager instance (singleton)
+    """
+    try:
+        from src.core.di import Container
+        cache = Container.resolve("cache_manager")
+        if cache is not None:
+            return cache
+    except ImportError:
+        pass
+    
+    # Fallback to manual singleton for backward compatibility
     global _cache_manager
     if _cache_manager is None:
         _cache_manager = CacheManager()

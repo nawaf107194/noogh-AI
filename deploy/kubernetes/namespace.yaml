@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: noogh-system
+  labels:
+    name: noogh-system
+    environment: production

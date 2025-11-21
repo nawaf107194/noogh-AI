@@ -27,7 +27,7 @@ import logging
 
 # Security Minister
 try:
-    from government.security_minister import (
+    from src.government.security_minister import (
         SecurityMinister,
         ThreatLevel,
         IncidentType,

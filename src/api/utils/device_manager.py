@@ -68,8 +68,14 @@ class DeviceManager:
                 "memory_available_gb": torch.cuda.mem_get_info()[0] / (1024**3),
                 "compute_capability": f"{props.major}.{props.minor}",
                 "multi_processor_count": props.multi_processor_count,
-                "max_threads_per_block": props.max_threads_per_block
             })
+            
+            # Handle max_threads_per_block (may not exist in newer PyTorch versions)
+            try:
+                info["max_threads_per_block"] = props.max_threads_per_block
+            except AttributeError:
+                # Fallback for newer PyTorch versions
+                info["max_threads_per_block"] = getattr(props, "max_threads_per_block", 1024)
 
         elif self.device.type == "cpu":
             # Get system memory info
@@ -217,10 +223,16 @@ class DeviceManager:
         }
 
 
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# DI Container Integration
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
 def get_device_manager() -> DeviceManager:
     """
     Factory function to get device manager instance
     دالة المصنع للحصول على مثيل إدارة الأجهزة
+    
+    Note: Creates a new instance each time (not singleton)
     """
     return DeviceManager()
 
@@ -229,7 +241,21 @@ def get_device_manager() -> DeviceManager:
 _device_manager = None
 
 def get_global_device_manager() -> DeviceManager:
-    """Get global device manager instance"""
+    """
+    Get global device manager instance from DI container
+    
+    Returns:
+        DeviceManager instance (singleton)
+    """
+    try:
+        from src.core.di import Container
+        device = Container.resolve("device_manager")
+        if device is not None:
+            return device
+    except ImportError:
+        pass
+    
+    # Fallback to manual singleton for backward compatibility
     global _device_manager
     if _device_manager is None:
         _device_manager = DeviceManager()

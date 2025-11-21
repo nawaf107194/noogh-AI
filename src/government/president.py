@@ -16,7 +16,9 @@ import logging
 from typing import Dict, Any, Optional, List
 from datetime import datetime
 
-from .base_minister import BaseMinister, MinisterReport, TaskStatus, Priority
+from ..nlp.intent import IntentRouter, Intent
+from ..knowledge.kernel import KnowledgeKernelV41
+from .base_minister import BaseMinister, Priority
 
 logger = logging.getLogger(__name__)
 
@@ -43,13 +45,20 @@ class President:
         self.cabinet: Dict[str, BaseMinister] = {}
         self.initialize_cabinet()
 
+        # Intent Router for dispatching
+        # In a real app, the kernel would be injected, not created here.
+        self.kernel = KnowledgeKernelV41()
+        self.intent_router = IntentRouter(self.kernel)
+        self.intent_to_minister_map = self._create_intent_map()
+
         # إحصائيات رئاسية
         self.total_requests = 0
         self.successful_requests = 0
 
         if self.verbose:
             logger.info("🎩 President initialized")
-            logger.info("   Cabinet ready with 4 ministers")
+            logger.info(f"   Cabinet ready with {len(self.cabinet)} ministers")
+            logger.info("   IntentRouter is now responsible for dispatch.")
 
     def initialize_cabinet(self):
         """Initialize and register all available ministers."""
@@ -65,38 +74,93 @@ class President:
             "communication": CommunicationMinister()
         }
 
+    def _create_intent_map(self) -> Dict[Intent, str]:
+        """Creates a mapping from Intent to minister key."""
+        return {
+            Intent.QUESTION_KB: "education",
+            Intent.QUESTION_WEB: "communication",
+            Intent.CHITCHAT: "communication",
+            Intent.COMMAND_NOT_IMPLEMENTED: "development",
+            Intent.UNKNOWN: "education", # Default fallback
+        }
+
     async def process_request(self, user_input: str, context: Optional[dict] = None, priority: str = "medium"):
         """
         Process a user request through the government system.
-
+        
         Args:
             user_input: طلب المستخدم
             context: سياق إضافي
             priority: أولوية المهمة
-
+            
         Returns:
             نتيجة المعالجة
         """
         self.total_requests += 1
-
-        # تحديد الوزير المناسب بناءً على نوع الطلب
-        minister_key = self._determine_minister(user_input)
+        context = context or {}
         
+        # 0. Recall relevant memories (Context Augmentation)
+        # We use the kernel to find similar past interactions or facts
+        memories = self.kernel.recall(user_input, top_k=2)
+        if memories:
+            context['memories'] = memories
+            if self.verbose:
+                logger.info(f"🧠 Recalled {len(memories)} relevant memories")
+
+        # 1. Determine intent using the router (Contextual)
+        # We pass the conversation history if available in context
+        history = context.get('history', [])
+        
+        # Use the analyzer directly for contextual analysis if possible, 
+        # otherwise fallback to router which might not expose it directly yet.
+        # For now, we assume intent_router has access to the analyzer or we use it directly if we had it.
+        # Since IntentRouter wraps the logic, we'll stick to its route method but ideally it should support context.
+        # TODO: Update IntentRouter to support context fully. For now, we rely on the kernel's enhanced capabilities.
+        
+        intent_response = self.intent_router.route(user_input, context)
+        intent = intent_response.intent
+        
+        if self.verbose:
+            logger.info(f"Intent determined: {intent.value}")
+
+        # 2. Determine the minister from the intent
+        minister_key = self.intent_to_minister_map.get(intent, "education") # Default to education
+        
+        if self.verbose:
+            logger.info(f"Dispatching to: {minister_key.upper()} Minister")
+
+        result_data = {}
         if minister_key in self.cabinet:
             try:
                 from .base_minister import generate_task_id
                 task_id = generate_task_id()
-                
-                result = await self.cabinet[minister_key].execute_task(
+
+                # Safe Priority enum access with fallback
+                try:
+                    priority_enum = Priority[priority.upper()]
+                except (KeyError, AttributeError):
+                    logger.warning(f"Invalid priority '{priority}', using MEDIUM")
+                    priority_enum = Priority.MEDIUM
+
+                # Use the specific intent value as the task_type
+                minister_result = await self.cabinet[minister_key].execute_task(
                     task_id=task_id,
-                    task_type="general",
-                    task_data={"input": user_input, "context": context or {}},
-                    priority=Priority(priority.upper())
+                    task_type=intent.value,
+                    task_data={"user_input": user_input, "context": context},
+                    priority=priority_enum
                 )
                 self.successful_requests += 1
-                return result.to_dict()
+                result_data = minister_result.to_dict()
+                
+                # 3. Learn from the interaction (Reinforcement / Memory)
+                # If the request was successful, store it in memory
+                if result_data.get('status') == 'completed':
+                    learning_text = f"User asked: '{user_input}'. System answered via {minister_key}: '{result_data.get('result', {}).get('message', 'Done')}'"
+                    self.kernel.learn(learning_text, metadata={"intent": intent.value, "minister": minister_key})
+                
+                return result_data
             except Exception as e:
-                logger.error(f"Error processing request with {minister_key}: {e}")
+                logger.error(f"Error processing request with {minister_key}: {e}", exc_info=True)
                 return {
                     "success": False,
                     "error": f"Error processing request: {str(e)}",
@@ -105,35 +169,10 @@ class President:
         else:
             return {
                 "success": False,
-                "error": f"No suitable minister found for request",
+                "error": f"No suitable minister found for intent '{intent.value}'",
                 "input": user_input
             }
 
-    def _determine_minister(self, user_input: str) -> str:
-        """
-        Determine the appropriate minister based on user input keywords.
-        """
-        user_input_lower = user_input.lower()
-        
-        # التعليم والبحث
-        if any(keyword in user_input_lower for keyword in ["علمني", "تعلم", "دورة", "شرح", "مفهوم", "درس"]):
-            return "education"
-        
-        # الأمن والحماية
-        elif any(keyword in user_input_lower for keyword in ["أمن", "حماية", "تهديد", "اختراق", "مراقبة"]):
-            return "security"
-        
-        # التطوير والبرمجة
-        elif any(keyword in user_input_lower for keyword in ["طور", "حسّن", "اصلح", "كود", "برمجة", "bug"]):
-            return "development"
-        
-        # التواصل والترجمة
-        elif any(keyword in user_input_lower for keyword in ["اكتب", "تقرير", "ترجم", "لخص", "رد"]):
-            return "communication"
-        
-        # افتراضي: التعليم
-        else:
-            return "education"
 
     def get_cabinet_status(self) -> Dict[str, Any]:
         """

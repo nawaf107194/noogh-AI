@@ -24,14 +24,15 @@ class FinanceMinister(BaseMinister):
     وزير المالية - مسؤول عن التحليل المالي، الميزانية، والتخطيط الاقتصادي
     """
 
-    def __init__(self, verbose: bool = True):
+    def __init__(self, verbose: bool = True, brain_hub: Any = None):
         super().__init__(
             minister_type=MinisterType.FINANCE,
             name="Finance Minister",
             authorities=["financial_analysis", "budgeting", "economic_planning", "cost_optimization"],
             verbose=verbose,
             specialty="Financial Analysis and Economic Planning",
-            description="تحليل مالي، ميزانية، تخطيط اقتصادي، تحسين التكاليف"
+            description="تحليل مالي، ميزانية، تخطيط اقتصادي، تحسين التكاليف",
+            brain_hub=brain_hub
         )
 
     def _can_handle_specific_task(self, task_type: str, task_data: Dict[str, Any]) -> bool:

@@ -1,0 +1,30 @@
+{
+  "development_minister": {
+    "auto_fix_enabled": true,
+    "max_complexity": 15,
+    "min_documentation_coverage": 50.0,
+    "verbose": true
+  },
+  "knowledge_kernel": {
+    "enable_brain": true,
+    "enable_allam": true,
+    "enable_intent_routing": true,
+    "enable_web_search": true,
+    "enable_reflection": true
+  },
+  "external_awareness": {
+    "enabled": true,
+    "cache_ttl_hours": 24,
+    "max_results": 10
+  },
+  "reflection": {
+    "enabled": true,
+    "db_path": "data/reflection/experience.db"
+  },
+  "auto_training": {
+    "enabled": true,
+    "initial_samples": 200,
+    "collection_sources": ["synthetic", "knowledge_base", "web"],
+    "auto_interval_hours": 24
+  }
+}

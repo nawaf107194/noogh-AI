@@ -24,7 +24,7 @@ class AnalysisMinister(BaseMinister):
     وزير التحليل - مسؤول عن تحليل البيانات الشامل وكشف الأنماط والتنبؤ
     """
 
-    def __init__(self, verbose: bool = True):
+    def __init__(self, verbose: bool = True, brain_hub: Any = None):
         super().__init__(
             minister_type=MinisterType.ANALYSIS,
             name="Analysis Minister",
@@ -32,6 +32,8 @@ class AnalysisMinister(BaseMinister):
             verbose=verbose,
             specialty="Data Analysis and Pattern Recognition",
             description="تحليل البيانات الشامل، كشف الأنماط، التنبؤ"
+        ,
+            brain_hub=brain_hub
         )
 
     def _can_handle_specific_task(self, task_type: str, task_data: Dict[str, Any]) -> bool:

@@ -24,7 +24,7 @@ class KnowledgeMinister(BaseMinister):
     وزير المعرفة - مسؤول عن إدارة قاعدة المعرفة وربط المفاهيم
     """
 
-    def __init__(self, verbose: bool = True):
+    def __init__(self, verbose: bool = True, brain_hub: Any = None):
         super().__init__(
             minister_type=MinisterType.KNOWLEDGE,
             name="Knowledge Minister",
@@ -32,6 +32,8 @@ class KnowledgeMinister(BaseMinister):
             verbose=verbose,
             specialty="Knowledge Management and Concept Linking",
             description="إدارة قاعدة المعرفة، Knowledge Graph، ربط المفاهيم"
+        ,
+            brain_hub=brain_hub
         )
 
     def _can_handle_specific_task(self, task_type: str, task_data: Dict[str, Any]) -> bool:

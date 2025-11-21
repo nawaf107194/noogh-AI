@@ -21,7 +21,7 @@ class PrivacyMinister(BaseMinister):
     وزير الخصوصية - المسؤول عن حماية البيانات الحساسة وإدارة الخصوصية
     """
     
-    def __init__(self, verbose: bool = True):
+    def __init__(self, verbose: bool = True, brain_hub: Any = None):
         super().__init__(
             minister_type=MinisterType.PRIVACY,
             name="Privacy Minister",
@@ -29,6 +29,8 @@ class PrivacyMinister(BaseMinister):
             verbose=verbose,
             specialty="حماية البيانات والخصوصية",
             description="المسؤول عن حماية البيانات الحساسة وتشفير المعلومات وإدارة الصلاحيات"
+        ,
+            brain_hub=brain_hub
         )
         
     def _can_handle_specific_task(self, task_type: str, task_data: Dict[str, Any]) -> bool:

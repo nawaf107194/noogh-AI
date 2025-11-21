@@ -111,8 +111,8 @@ def test_phase_b_semantic_intent():
         result1 = analyzer.analyze(text1)
 
         print(f"  Text: '{text1}'")
-        print(f"  Semantic Layer: {result1.semantic.layer.value}")
-        print(f"  Intent Layer: {result1.intent.layer.value}")
+        print(f"  Semantic Layer: {result1.semantic.value}")
+        print(f"  Intent Layer: {result1.intent.value}")
         print(f"  Emotional Tone: {result1.emotional.tone.value} (intensity: {result1.emotional.intensity:.2f})")
         print(f"  Semantic-Intent Alignment: {result1.semantic_intent_alignment:.2%}")
         print(f"  Interpreted Meaning: {result1.interpreted_meaning}")
@@ -124,8 +124,8 @@ def test_phase_b_semantic_intent():
         result2 = analyzer.analyze(text2)
 
         print(f"  Text: '{text2}'")
-        print(f"  Semantic Layer: {result2.semantic.layer.value}")
-        print(f"  Intent Layer: {result2.intent.layer.value}")
+        print(f"  Semantic Layer: {result2.semantic.value}")
+        print(f"  Intent Layer: {result2.intent.value}")
         print(f"  Emotional Tone: {result2.emotional.tone.value} (intensity: {result2.emotional.intensity:.2f})")
         print(f"  Semantic-Intent Alignment: {result2.semantic_intent_alignment:.2%}")
         print(f"  Contradiction Detected: {result2.contradiction_detected}")
@@ -140,9 +140,9 @@ def test_phase_b_semantic_intent():
         result3 = analyzer.analyze(text3)
 
         print(f"  Text: '{text3}'")
-        print(f"  Semantic Layer: {result3.semantic.layer.value}")
-        print(f"  Literal Meaning: {result3.semantic.literal_meaning}")
-        print(f"  Intent Layer: {result3.intent.layer.value}")
+        print(f"  Semantic Layer: {result3.semantic.value}")
+        print(f"  Literal Meaning: {result3.semantic.value}")  # Fixed: SemanticLayer is the enum itself
+        print(f"  Intent Layer: {result3.intent.value}")
         print()
 
         print("✅ Phase B: PASSED")

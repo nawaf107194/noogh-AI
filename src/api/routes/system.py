@@ -18,7 +18,7 @@ import psutil
 from datetime import datetime, timezone
 
 # استخدام BASE_DIR من config
-from config import BASE_DIR
+from src.core.config import BASE_DIR
 if str(BASE_DIR) not in sys.path:
     sys.path.insert(0, str(BASE_DIR))
 

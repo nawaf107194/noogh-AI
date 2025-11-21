@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: noogh-config
+  namespace: noogh-system
+  labels:
+    app: noogh-system
+data:
+  log_level: "INFO"
+  api_host: "0.0.0.0"
+  api_port: "8000"
+  mcp_port: "8001"
+  workers: "2"
+
+  # Feature flags
+  enable_brain: "false"
+  enable_allam: "true"
+  enable_intent_routing: "true"
+  enable_web_search: "true"
+  enable_reflection: "true"
+
+  # Performance tuning
+  max_requests: "1000"
+  timeout: "300"
+  keepalive: "5"

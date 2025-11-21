@@ -24,7 +24,7 @@ class StrategyMinister(BaseMinister):
     وزير الاستراتيجية - مسؤول عن التخطيط الاستراتيجي وتحليل SWOT وتحديد الأولويات
     """
 
-    def __init__(self, verbose: bool = True):
+    def __init__(self, verbose: bool = True, brain_hub: Any = None):
         super().__init__(
             minister_type=MinisterType.STRATEGY,
             name="Strategy Minister",
@@ -32,6 +32,8 @@ class StrategyMinister(BaseMinister):
             verbose=verbose,
             specialty="Strategic Planning and Analysis",
             description="التخطيط الاستراتيجي، تحليل SWOT، تحديد الأولويات"
+        ,
+            brain_hub=brain_hub
         )
 
     def _can_handle_specific_task(self, task_type: str, task_data: Dict[str, Any]) -> bool:

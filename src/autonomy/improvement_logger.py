@@ -422,11 +422,26 @@ class ImprovementLogger:
         }
 
 
-# Global improvement logger instance
-_improvement_logger = None
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# DI Container Integration
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 def get_improvement_logger() -> ImprovementLogger:
-    """Get global improvement logger instance"""
+    """
+    Get global improvement logger instance from DI container
+    
+    Returns:
+        ImprovementLogger instance (singleton)
+    """
+    try:
+        from src.core.di import Container
+        logger_inst = Container.resolve("improvement_logger")
+        if logger_inst is not None:
+            return logger_inst
+    except ImportError:
+        pass
+    
+    # Fallback to manual singleton for backward compatibility
     global _improvement_logger
     if _improvement_logger is None:
         _improvement_logger = ImprovementLogger()

@@ -1,0 +1,1363 @@
+{
+  "metadata": {
+    "version": "4.1-expanded",
+    "created": "2025-11-17T17:40:00.449541",
+    "total_chunks": 89,
+    "last_updated": "2025-11-17T17:40:00.449546",
+    "categories": [
+      "ai",
+      "linux",
+      "security",
+      "devops",
+      "mlops",
+      "python"
+    ],
+    "category_stats": {
+      "devops": 20,
+      "linux": 15,
+      "python": 16,
+      "ai": 18,
+      "mlops": 10,
+      "security": 10
+    }
+  },
+  "chunks": [
+    {
+      "id": "devops-001",
+      "text": "Docker is a containerization platform that packages applications and their dependencies into containers. Containers are lightweight, portable, and ensure consistency across different environments.",
+      "metadata": {
+        "category": "devops",
+        "topic": "docker",
+        "difficulty": "beginner"
+      },
+      "source": "devops-handbook",
+      "intent": [
+        "technical",
+        "development"
+      ]
+    },
+    {
+      "id": "devops-002",
+      "text": "Kubernetes is an open-source container orchestration platform. It automates deployment, scaling, and management of containerized applications across clusters of hosts.",
+      "metadata": {
+        "category": "devops",
+        "topic": "kubernetes",
+        "difficulty": "intermediate"
+      },
+      "source": "devops-handbook",
+      "intent": [
+        "technical",
+        "development"
+      ]
+    },
+    {
+      "id": "devops-003",
+      "text": "CI/CD (Continuous Integration/Continuous Deployment) automates code integration, testing, and deployment. Popular tools include Jenkins, GitLab CI, GitHub Actions, and CircleCI.",
+      "metadata": {
+        "category": "devops",
+        "topic": "ci-cd",
+        "difficulty": "intermediate"
+      },
+      "source": "devops-handbook",
+      "intent": [
+        "technical",
+        "development"
+      ]
+    },
+    {
+      "id": "devops-004",
+      "text": "Infrastructure as Code (IaC) manages infrastructure through code rather than manual processes. Tools like Terraform, Ansible, and CloudFormation enable version-controlled infrastructure.",
+      "metadata": {
+        "category": "devops",
+        "topic": "iac",
+        "difficulty": "intermediate"
+      },
+      "source": "devops-handbook",
+      "intent": [
+        "technical",
+        "development"
+      ]
+    },
+    {
+      "id": "devops-005",
+      "text": "Docker Compose is a tool for defining and running multi-container Docker applications. You define services in a YAML file and can start all services with a single command.",
+      "metadata": {
+        "category": "devops",
+        "topic": "docker",
+        "difficulty": "intermediate"
+      },
+      "source": "devops-handbook",
+      "intent": [
+        "technical",
+        "development"
+      ]
+    },
+    {
+      "id": "linux-001",
+      "text": "Linux file permissions use read (r), write (w), and execute (x) for owner, group, and others. Use chmod to change permissions (e.g., chmod 755 file.sh).",
+      "metadata": {
+        "category": "linux",
+        "topic": "permissions",
+        "difficulty": "beginner"
+      },
+      "source": "linux-handbook",
+      "intent": [
+        "technical"
+      ]
+    },
+    {
+      "id": "linux-002",
+      "text": "systemctl is used to manage systemd services. Common commands: systemctl start/stop/restart/status service-name, systemctl enable/disable service-name for boot configuration.",
+      "metadata": {
+        "category": "linux",
+        "topic": "systemd",
+        "difficulty": "intermediate"
+      },
+      "source": "linux-handbook",
+      "intent": [
+        "technical"
+      ]
+    },
+    {
+      "id": "linux-003",
+      "text": "SSH (Secure Shell) provides encrypted remote access to servers. Use ssh user@host to connect, and ssh-keygen to generate key pairs for passwordless authentication.",
+      "metadata": {
+        "category": "linux",
+        "topic": "ssh",
+        "difficulty": "beginner"
+      },
+      "source": "linux-handbook",
+      "intent": [
+        "technical",
+        "security"
+      ]
+    },
+    {
+      "id": "linux-004",
+      "text": "Cron jobs automate recurring tasks. Edit crontab with 'crontab -e'. Format: minute hour day month weekday command. Example: '0 2 * * * /backup.sh' runs daily at 2 AM.",
+      "metadata": {
+        "category": "linux",
+        "topic": "cron",
+        "difficulty": "intermediate"
+      },
+      "source": "linux-handbook",
+      "intent": [
+        "technical"
+      ]
+    },
+    {
+      "id": "linux-005",
+      "text": "Process management commands: ps aux (list processes), top/htop (monitor resources), kill PID (terminate process), killall name (kill by name), bg/fg (background/foreground).",
+      "metadata": {
+        "category": "linux",
+        "topic": "processes",
+        "difficulty": "intermediate"
+      },
+      "source": "linux-handbook",
+      "intent": [
+        "technical"
+      ]
+    },
+    {
+      "id": "python-001",
+      "text": "Python virtual environments isolate project dependencies. Create with 'python -m venv venv', activate with 'source venv/bin/activate' (Linux/Mac) or 'venv\\Scripts\\activate' (Windows).",
+      "metadata": {
+        "category": "python",
+        "topic": "environment",
+        "difficulty": "beginner"
+      },
+      "source": "python-docs",
+      "intent": [
+        "code",
+        "development"
+      ]
+    },
+    {
+      "id": "python-002",
+      "text": "FastAPI is a modern Python web framework for building APIs. Features include automatic OpenAPI docs, async support, type hints validation, and high performance comparable to NodeJS.",
+      "metadata": {
+        "category": "python",
+        "topic": "fastapi",
+        "difficulty": "intermediate"
+      },
+      "source": "python-docs",
+      "intent": [
+        "code",
+        "development"
+      ]
+    },
+    {
+      "id": "python-003",
+      "text": "List comprehensions provide concise syntax for creating lists: [x*2 for x in range(10) if x%2==0] creates [0, 4, 8, 12, 16]. Similar syntax works for dict/set comprehensions.",
+      "metadata": {
+        "category": "python",
+        "topic": "syntax",
+        "difficulty": "intermediate"
+      },
+      "source": "python-docs",
+      "intent": [
+        "code"
+      ]
+    },
+    {
+      "id": "python-004",
+      "text": "Python decorators modify function behavior. Syntax: @decorator_name before function definition. Common uses: @staticmethod, @classmethod, @property, and custom decorators for logging/timing.",
+      "metadata": {
+        "category": "python",
+        "topic": "decorators",
+        "difficulty": "advanced"
+      },
+      "source": "python-docs",
+      "intent": [
+        "code"
+      ]
+    },
+    {
+      "id": "python-005",
+      "text": "Async/await in Python enables concurrent programming. Use 'async def' for coroutines, 'await' for async calls, and asyncio.run() or asyncio.gather() to execute async functions.",
+      "metadata": {
+        "category": "python",
+        "topic": "async",
+        "difficulty": "advanced"
+      },
+      "source": "python-docs",
+      "intent": [
+        "code",
+        "development"
+      ]
+    },
+    {
+      "id": "ai-001",
+      "text": "Transformers revolutionized NLP through attention mechanisms. They enable models to weigh the importance of different parts of input, enabling better context understanding than RNNs.",
+      "metadata": {
+        "category": "ai",
+        "topic": "transformers",
+        "difficulty": "advanced"
+      },
+      "source": "ai-research",
+      "intent": [
+        "technical"
+      ]
+    },
+    {
+      "id": "ai-002",
+      "text": "BERT (Bidirectional Encoder Representations from Transformers) uses masked language modeling to pre-train on large text corpora, then fine-tunes for specific NLP tasks.",
+      "metadata": {
+        "category": "ai",
+        "topic": "bert",
+        "difficulty": "advanced"
+      },
+      "source": "ai-research",
+      "intent": [
+        "technical"
+      ]
+    },
+    {
+      "id": "ai-003",
+      "text": "GPT (Generative Pre-trained Transformer) is an autoregressive language model trained to predict the next token. GPT-4 and Claude are examples of large language models based on this architecture.",
+      "metadata": {
+        "category": "ai",
+        "topic": "gpt",
+        "difficulty": "advanced"
+      },
+      "source": "ai-research",
+      "intent": [
+        "technical"
+      ]
+    },
+    {
+      "id": "ai-004",
+      "text": "Fine-tuning adapts pre-trained models to specific tasks. Methods include full fine-tuning, LoRA (Low-Rank Adaptation), and prompt tuning. LoRA is memory-efficient for large models.",
+      "metadata": {
+        "category": "ai",
+        "topic": "fine-tuning",
+        "difficulty": "advanced"
+      },
+      "source": "ai-research",
+      "intent": [
+        "technical"
+      ]
+    },
+    {
+      "id": "ai-005",
+      "text": "PyTorch is a deep learning framework with dynamic computation graphs. Key features: autograd for automatic differentiation, nn.Module for model building, DataLoader for data handling.",
+      "metadata": {
+        "category": "ai",
+        "topic": "pytorch",
+        "difficulty": "intermediate"
+      },
+      "source": "ai-research",
+      "intent": [
+        "code",
+        "technical"
+      ]
+    },
+    {
+      "id": "ai-006",
+      "text": "Embeddings map discrete data (words, items) to continuous vector spaces. Word2Vec, GloVe, and transformer-based embeddings capture semantic relationships between entities.",
+      "metadata": {
+        "category": "ai",
+        "topic": "embeddings",
+        "difficulty": "intermediate"
+      },
+      "source": "ai-research",
+      "intent": [
+        "technical"
+      ]
+    },
+    {
+      "id": "ai-007",
+      "text": "RAG (Retrieval-Augmented Generation) combines retrieval systems with LLMs. It retrieves relevant documents and provides them as context to improve generation accuracy and reduce hallucinations.",
+      "metadata": {
+        "category": "ai",
+        "topic": "rag",
+        "difficulty": "advanced"
+      },
+      "source": "ai-research",
+      "intent": [
+        "technical"
+      ]
+    },
+    {
+      "id": "ai-008",
+      "text": "Vector databases like FAISS, Pinecone, and Weaviate enable efficient similarity search over embeddings. Essential for RAG systems and semantic search applications.",
+      "metadata": {
+        "category": "ai",
+        "topic": "vector-db",
+        "difficulty": "intermediate"
+      },
+      "source": "ai-research",
+      "intent": [
+        "technical",
+        "development"
+      ]
+    },
+    {
+      "id": "mlops-001",
+      "text": "Model serving frameworks like TorchServe, TensorFlow Serving, and Triton enable production deployment of ML models with REST/gRPC APIs, batching, and monitoring.",
+      "metadata": {
+        "category": "mlops",
+        "topic": "serving",
+        "difficulty": "advanced"
+      },
+      "source": "mlops-handbook",
+      "intent": [
+        "technical",
+        "development"
+      ]
+    },
+    {
+      "id": "mlops-002",
+      "text": "MLflow tracks experiments, manages models, and handles deployment. It provides logging APIs for parameters, metrics, and artifacts across different ML frameworks.",
+      "metadata": {
+        "category": "mlops",
+        "topic": "mlflow",
+        "difficulty": "intermediate"
+      },
+      "source": "mlops-handbook",
+      "intent": [
+        "technical",
+        "development"
+      ]
+    },
+    {
+      "id": "mlops-003",
+      "text": "Model monitoring tracks model performance in production. Key metrics: prediction drift, data drift, model accuracy over time. Tools include Evidently AI, WhyLabs, and custom dashboards.",
+      "metadata": {
+        "category": "mlops",
+        "topic": "monitoring",
+        "difficulty": "advanced"
+      },
+      "source": "mlops-handbook",
+      "intent": [
+        "technical"
+      ]
+    },
+    {
+      "id": "mlops-004",
+      "text": "Feature stores (Feast, Tecton) centralize feature engineering and serving. They ensure consistency between training and inference features, and enable feature reuse across models.",
+      "metadata": {
+        "category": "mlops",
+        "topic": "feature-store",
+        "difficulty": "advanced"
+      },
+      "source": "mlops-handbook",
+      "intent": [
+        "technical",
+        "development"
+      ]
+    },
+    {
+      "id": "mlops-005",
+      "text": "A/B testing for ML models compares two model versions in production. Use statistical tests to determine which performs better before full rollout.",
+      "metadata": {
+        "category": "mlops",
+        "topic": "ab-testing",
+        "difficulty": "intermediate"
+      },
+      "source": "mlops-handbook",
+      "intent": [
+        "technical"
+      ]
+    },
+    {
+      "id": "security-001",
+      "text": "OWASP Top 10 identifies critical web security risks: Injection, Broken Auth, Sensitive Data Exposure, XXE, Broken Access Control, Security Misconfiguration, XSS, Insecure Deserialization, etc.",
+      "metadata": {
+        "category": "security",
+        "topic": "owasp",
+        "difficulty": "intermediate"
+      },
+      "source": "security-handbook",
+      "intent": [
+        "technical",
+        "security"
+      ]
+    },
+    {
+      "id": "security-002",
+      "text": "SQL Injection occurs when user input is concatenated directly into SQL queries. Prevent using parameterized queries or ORMs. Never trust user input.",
+      "metadata": {
+        "category": "security",
+        "topic": "sql-injection",
+        "difficulty": "intermediate"
+      },
+      "source": "security-handbook",
+      "intent": [
+        "technical",
+        "security"
+      ]
+    },
+    {
+      "id": "security-003",
+      "text": "JWT (JSON Web Tokens) secure API authentication. Structure: header.payload.signature. Always verify signatures, use HTTPS, set short expiration times, and store securely.",
+      "metadata": {
+        "category": "security",
+        "topic": "jwt",
+        "difficulty": "intermediate"
+      },
+      "source": "security-handbook",
+      "intent": [
+        "technical",
+        "security",
+        "development"
+      ]
+    },
+    {
+      "id": "security-004",
+      "text": "HTTPS uses TLS/SSL to encrypt HTTP traffic. Always use HTTPS in production. Let's Encrypt provides free SSL certificates. Configure with strong cipher suites and TLS 1.2+.",
+      "metadata": {
+        "category": "security",
+        "topic": "https",
+        "difficulty": "beginner"
+      },
+      "source": "security-handbook",
+      "intent": [
+        "technical",
+        "security"
+      ]
+    },
+    {
+      "id": "security-005",
+      "text": "Environment variables store secrets securely. Never commit .env files to git. Use secret managers like AWS Secrets Manager, HashiCorp Vault, or Docker secrets in production.",
+      "metadata": {
+        "category": "security",
+        "topic": "secrets",
+        "difficulty": "intermediate"
+      },
+      "source": "security-handbook",
+      "intent": [
+        "technical",
+        "security",
+        "development"
+      ]
+    },
+    {
+      "id": "devops-006",
+      "text": "Nginx is a high-performance web server and reverse proxy. Use it for load balancing, SSL termination, serving static files, and proxying to application servers.",
+      "metadata": {
+        "category": "devops",
+        "topic": "nginx",
+        "difficulty": "intermediate"
+      },
+      "source": "devops-handbook",
+      "intent": [
+        "technical",
+        "development"
+      ]
+    },
+    {
+      "id": "devops-007",
+      "text": "Redis is an in-memory data store used for caching, session storage, pub/sub messaging, and real-time analytics. Supports strings, hashes, lists, sets, sorted sets.",
+      "metadata": {
+        "category": "devops",
+        "topic": "redis",
+        "difficulty": "intermediate"
+      },
+      "source": "devops-handbook",
+      "intent": [
+        "technical",
+        "development"
+      ]
+    },
+    {
+      "id": "devops-008",
+      "text": "PostgreSQL is an advanced open-source relational database. Features include ACID compliance, JSONB support, full-text search, and excellent performance for complex queries.",
+      "metadata": {
+        "category": "devops",
+        "topic": "postgresql",
+        "difficulty": "intermediate"
+      },
+      "source": "devops-handbook",
+      "intent": [
+        "technical",
+        "development"
+      ]
+    },
+    {
+      "id": "linux-006",
+      "text": "Firewall management with ufw (Ubuntu): 'sudo ufw enable', 'sudo ufw allow 22', 'sudo ufw deny 80', 'sudo ufw status'. Simple interface for iptables configuration.",
+      "metadata": {
+        "category": "linux",
+        "topic": "firewall",
+        "difficulty": "intermediate"
+      },
+      "source": "linux-handbook",
+      "intent": [
+        "technical",
+        "security"
+      ]
+    },
+    {
+      "id": "linux-007",
+      "text": "Log management: journalctl for systemd logs, tail -f for real-time monitoring, logrotate for log rotation. Store logs in /var/log/, use centralized logging in production.",
+      "metadata": {
+        "category": "linux",
+        "topic": "logging",
+        "difficulty": "intermediate"
+      },
+      "source": "linux-handbook",
+      "intent": [
+        "technical"
+      ]
+    },
+    {
+      "id": "python-006",
+      "text": "Pydantic validates data using Python type hints. Define models with field types, get automatic validation, serialization, and IDE support. Perfect for API data validation.",
+      "metadata": {
+        "category": "python",
+        "topic": "pydantic",
+        "difficulty": "intermediate"
+      },
+      "source": "python-docs",
+      "intent": [
+        "code",
+        "development"
+      ]
+    },
+    {
+      "id": "python-007",
+      "text": "Python testing with pytest: Write test functions starting with 'test_', use fixtures for setup, assert for validation, and parametrize for multiple test cases.",
+      "metadata": {
+        "category": "python",
+        "topic": "testing",
+        "difficulty": "intermediate"
+      },
+      "source": "python-docs",
+      "intent": [
+        "code",
+        "development"
+      ]
+    },
+    {
+      "id": "python-008",
+      "text": "Context managers with 'with' statement ensure resource cleanup. Use for files, database connections, locks. Create custom with __enter__ and __exit__ methods.",
+      "metadata": {
+        "category": "python",
+        "topic": "context-managers",
+        "difficulty": "advanced"
+      },
+      "source": "python-docs",
+      "intent": [
+        "code"
+      ]
+    },
+    {
+      "id": "ai-009",
+      "text": "Attention mechanisms allow models to focus on relevant parts of input. Self-attention in transformers computes attention scores between all tokens in a sequence.",
+      "metadata": {
+        "category": "ai",
+        "topic": "attention",
+        "difficulty": "advanced"
+      },
+      "source": "ai-research",
+      "intent": [
+        "technical"
+      ]
+    },
+    {
+      "id": "ai-010",
+      "text": "Transfer learning uses pre-trained models as starting points for new tasks. Common in computer vision (ImageNet models) and NLP (BERT, GPT). Reduces training time and data requirements.",
+      "metadata": {
+        "category": "ai",
+        "topic": "transfer-learning",
+        "difficulty": "intermediate"
+      },
+      "source": "ai-research",
+      "intent": [
+        "technical"
+      ]
+    },
+    {
+      "id": "devops-009",
+      "text": "GitOps uses Git as single source of truth for infrastructure and applications. Tools like ArgoCD and Flux CD automate deployments based on Git repository changes.",
+      "metadata": {
+        "category": "devops",
+        "topic": "gitops",
+        "difficulty": "advanced"
+      },
+      "source": "devops-handbook",
+      "intent": [
+        "technical",
+        "development"
+      ]
+    },
+    {
+      "id": "devops-010",
+      "text": "Prometheus monitors and alerts for cloud-native applications. It scrapes metrics from targets, stores time-series data, and supports PromQL for querying. Works well with Grafana.",
+      "metadata": {
+        "category": "devops",
+        "topic": "monitoring",
+        "difficulty": "intermediate"
+      },
+      "source": "devops-handbook",
+      "intent": [
+        "technical"
+      ]
+    },
+    {
+      "id": "devops-011",
+      "text": "Helm is Kubernetes package manager. Charts are packages of pre-configured K8s resources. Use 'helm install', 'helm upgrade', 'helm rollback' for managing releases.",
+      "metadata": {
+        "category": "devops",
+        "topic": "helm",
+        "difficulty": "intermediate"
+      },
+      "source": "devops-handbook",
+      "intent": [
+        "technical",
+        "development"
+      ]
+    },
+    {
+      "id": "devops-012",
+      "text": "Service mesh (Istio, Linkerd) provides observability, security, and traffic management for microservices without changing application code. Handles service-to-service communication.",
+      "metadata": {
+        "category": "devops",
+        "topic": "service-mesh",
+        "difficulty": "advanced"
+      },
+      "source": "devops-handbook",
+      "intent": [
+        "technical"
+      ]
+    },
+    {
+      "id": "devops-013",
+      "text": "Load balancers distribute traffic across servers. Layer 4 (transport layer) balances TCP/UDP, Layer 7 (application layer) balances HTTP/HTTPS with content-based routing.",
+      "metadata": {
+        "category": "devops",
+        "topic": "load-balancing",
+        "difficulty": "intermediate"
+      },
+      "source": "devops-handbook",
+      "intent": [
+        "technical"
+      ]
+    },
+    {
+      "id": "devops-014",
+      "text": "Blue-green deployment runs two identical environments. Blue serves production, green is new version. Switch traffic when green is validated. Enables instant rollback.",
+      "metadata": {
+        "category": "devops",
+        "topic": "deployment",
+        "difficulty": "intermediate"
+      },
+      "source": "devops-handbook",
+      "intent": [
+        "technical"
+      ]
+    },
+    {
+      "id": "devops-015",
+      "text": "Canary deployments gradually roll out changes to a small subset of users before full deployment. Monitor metrics to detect issues early and rollback if needed.",
+      "metadata": {
+        "category": "devops",
+        "topic": "deployment",
+        "difficulty": "intermediate"
+      },
+      "source": "devops-handbook",
+      "intent": [
+        "technical"
+      ]
+    },
+    {
+      "id": "devops-016",
+      "text": "ElasticSearch, Logstash, Kibana (ELK) stack centralizes logging. Logstash collects logs, Elasticsearch stores/indexes, Kibana visualizes. Alternative: EFK (Fluentd instead of Logstash).",
+      "metadata": {
+        "category": "devops",
+        "topic": "logging",
+        "difficulty": "intermediate"
+      },
+      "source": "devops-handbook",
+      "intent": [
+        "technical"
+      ]
+    },
+    {
+      "id": "devops-017",
+      "text": "Container registries store Docker images. Docker Hub is public, use private registries (ECR, GCR, Harbor) for production. Always scan images for vulnerabilities.",
+      "metadata": {
+        "category": "devops",
+        "topic": "docker",
+        "difficulty": "beginner"
+      },
+      "source": "devops-handbook",
+      "intent": [
+        "technical",
+        "security"
+      ]
+    },
+    {
+      "id": "devops-018",
+      "text": "Vault by HashiCorp manages secrets and encrypts data. It provides dynamic secrets, data encryption, identity-based access, and detailed audit logs.",
+      "metadata": {
+        "category": "devops",
+        "topic": "secrets",
+        "difficulty": "advanced"
+      },
+      "source": "devops-handbook",
+      "intent": [
+        "technical",
+        "security"
+      ]
+    },
+    {
+      "id": "devops-019",
+      "text": "API Gateway routes requests to microservices, handles authentication, rate limiting, request transformation, and monitoring. Examples: Kong, AWS API Gateway, Nginx.",
+      "metadata": {
+        "category": "devops",
+        "topic": "api-gateway",
+        "difficulty": "intermediate"
+      },
+      "source": "devops-handbook",
+      "intent": [
+        "technical",
+        "development"
+      ]
+    },
+    {
+      "id": "devops-020",
+      "text": "Health checks verify service availability. Liveness checks detect if app is running, readiness checks if it can serve traffic. K8s uses these for pod management.",
+      "metadata": {
+        "category": "devops",
+        "topic": "health-checks",
+        "difficulty": "intermediate"
+      },
+      "source": "devops-handbook",
+      "intent": [
+        "technical"
+      ]
+    },
+    {
+      "id": "linux-008",
+      "text": "Find command searches files: 'find /path -name '*.py' -type f -mtime -7' finds Python files modified in last 7 days. Combine with -exec for actions on results.",
+      "metadata": {
+        "category": "linux",
+        "topic": "file-search",
+        "difficulty": "intermediate"
+      },
+      "source": "linux-handbook",
+      "intent": [
+        "technical"
+      ]
+    },
+    {
+      "id": "linux-009",
+      "text": "Grep searches text: 'grep -r 'pattern' /path' searches recursively. Use -i for case-insensitive, -v to invert match, -n for line numbers, -A/-B for context lines.",
+      "metadata": {
+        "category": "linux",
+        "topic": "text-search",
+        "difficulty": "beginner"
+      },
+      "source": "linux-handbook",
+      "intent": [
+        "technical"
+      ]
+    },
+    {
+      "id": "linux-010",
+      "text": "Disk usage commands: 'df -h' shows filesystem usage, 'du -sh *' shows directory sizes, 'ncdu' provides interactive view. Monitor to prevent disk full issues.",
+      "metadata": {
+        "category": "linux",
+        "topic": "disk",
+        "difficulty": "beginner"
+      },
+      "source": "linux-handbook",
+      "intent": [
+        "technical"
+      ]
+    },
+    {
+      "id": "linux-011",
+      "text": "Network troubleshooting: 'ping' tests connectivity, 'traceroute' shows packet path, 'netstat -tuln' lists listening ports, 'ss' is modern alternative to netstat.",
+      "metadata": {
+        "category": "linux",
+        "topic": "networking",
+        "difficulty": "intermediate"
+      },
+      "source": "linux-handbook",
+      "intent": [
+        "technical"
+      ]
+    },
+    {
+      "id": "linux-012",
+      "text": "Package management on Debian/Ubuntu: 'apt update' refreshes package list, 'apt install' installs packages, 'apt upgrade' updates packages, 'apt autoremove' removes unused dependencies.",
+      "metadata": {
+        "category": "linux",
+        "topic": "package-management",
+        "difficulty": "beginner"
+      },
+      "source": "linux-handbook",
+      "intent": [
+        "technical"
+      ]
+    },
+    {
+      "id": "linux-013",
+      "text": "Environment variables: 'export VAR=value' sets variable, 'echo $VAR' displays value, add to ~/.bashrc for persistence. Use 'env' to list all variables.",
+      "metadata": {
+        "category": "linux",
+        "topic": "environment",
+        "difficulty": "beginner"
+      },
+      "source": "linux-handbook",
+      "intent": [
+        "technical"
+      ]
+    },
+    {
+      "id": "linux-014",
+      "text": "Symbolic links: 'ln -s /path/to/original /path/to/link' creates symlink. Useful for version management, config files, and aliasing paths.",
+      "metadata": {
+        "category": "linux",
+        "topic": "filesystem",
+        "difficulty": "beginner"
+      },
+      "source": "linux-handbook",
+      "intent": [
+        "technical"
+      ]
+    },
+    {
+      "id": "linux-015",
+      "text": "User management: 'useradd' creates users, 'usermod' modifies, 'userdel' deletes, 'passwd' changes passwords, 'groups' shows user groups, 'sudo' grants elevated privileges.",
+      "metadata": {
+        "category": "linux",
+        "topic": "users",
+        "difficulty": "intermediate"
+      },
+      "source": "linux-handbook",
+      "intent": [
+        "technical"
+      ]
+    },
+    {
+      "id": "python-009",
+      "text": "Generators use 'yield' to produce values lazily, saving memory. Generator expressions: (x*2 for x in range(1000000)) creates iterator without storing all values.",
+      "metadata": {
+        "category": "python",
+        "topic": "generators",
+        "difficulty": "intermediate"
+      },
+      "source": "python-docs",
+      "intent": [
+        "code"
+      ]
+    },
+    {
+      "id": "python-010",
+      "text": "Dataclasses simplify class creation: '@dataclass' decorator auto-generates __init__, __repr__, __eq__. Supports default values, type hints, and frozen instances.",
+      "metadata": {
+        "category": "python",
+        "topic": "dataclasses",
+        "difficulty": "intermediate"
+      },
+      "source": "python-docs",
+      "intent": [
+        "code"
+      ]
+    },
+    {
+      "id": "python-011",
+      "text": "Type hints improve code clarity and enable static analysis: 'def greet(name: str) -> str:'. Use Optional, Union, List, Dict from typing module.",
+      "metadata": {
+        "category": "python",
+        "topic": "type-hints",
+        "difficulty": "intermediate"
+      },
+      "source": "python-docs",
+      "intent": [
+        "code"
+      ]
+    },
+    {
+      "id": "python-012",
+      "text": "Error handling: try/except catches exceptions, else runs if no exception, finally always executes. Use specific exceptions, avoid bare except. raise for custom errors.",
+      "metadata": {
+        "category": "python",
+        "topic": "exceptions",
+        "difficulty": "beginner"
+      },
+      "source": "python-docs",
+      "intent": [
+        "code"
+      ]
+    },
+    {
+      "id": "python-013",
+      "text": "Logging module: import logging, logging.basicConfig() configures, logging.debug/info/warning/error/critical() log messages. Better than print for production code.",
+      "metadata": {
+        "category": "python",
+        "topic": "logging",
+        "difficulty": "intermediate"
+      },
+      "source": "python-docs",
+      "intent": [
+        "code"
+      ]
+    },
+    {
+      "id": "python-014",
+      "text": "Collections module provides specialized data structures: Counter (counting hashable objects), defaultdict (default values), OrderedDict (insertion order), deque (double-ended queue).",
+      "metadata": {
+        "category": "python",
+        "topic": "collections",
+        "difficulty": "intermediate"
+      },
+      "source": "python-docs",
+      "intent": [
+        "code"
+      ]
+    },
+    {
+      "id": "python-015",
+      "text": "Pathlib for file operations: from pathlib import Path. Object-oriented file handling: Path('file.txt').read_text(), .write_text(), .exists(), .mkdir(), .glob().",
+      "metadata": {
+        "category": "python",
+        "topic": "pathlib",
+        "difficulty": "intermediate"
+      },
+      "source": "python-docs",
+      "intent": [
+        "code"
+      ]
+    },
+    {
+      "id": "python-016",
+      "text": "F-strings format strings: f'Hello {name}, you are {age} years old'. Supports expressions: f'{value:.2f}', f'{today:%Y-%m-%d}'. Faster than .format() or %.",
+      "metadata": {
+        "category": "python",
+        "topic": "strings",
+        "difficulty": "beginner"
+      },
+      "source": "python-docs",
+      "intent": [
+        "code"
+      ]
+    },
+    {
+      "id": "ai-011",
+      "text": "Convolutional Neural Networks (CNNs) excel at image tasks. Key layers: Conv2D (feature extraction), MaxPooling (dimensionality reduction), Flatten, Dense (classification).",
+      "metadata": {
+        "category": "ai",
+        "topic": "cnn",
+        "difficulty": "intermediate"
+      },
+      "source": "ai-research",
+      "intent": [
+        "technical"
+      ]
+    },
+    {
+      "id": "ai-012",
+      "text": "Recurrent Neural Networks (RNNs) process sequential data. LSTM and GRU variants solve vanishing gradient problem. Used for time series, text, before transformers dominated NLP.",
+      "metadata": {
+        "category": "ai",
+        "topic": "rnn",
+        "difficulty": "intermediate"
+      },
+      "source": "ai-research",
+      "intent": [
+        "technical"
+      ]
+    },
+    {
+      "id": "ai-013",
+      "text": "Reinforcement Learning: agent learns by interacting with environment, receives rewards/penalties. Q-learning, PPO, SAC are popular algorithms. Used in games, robotics.",
+      "metadata": {
+        "category": "ai",
+        "topic": "reinforcement-learning",
+        "difficulty": "advanced"
+      },
+      "source": "ai-research",
+      "intent": [
+        "technical"
+      ]
+    },
+    {
+      "id": "ai-014",
+      "text": "Batch normalization normalizes layer inputs during training, stabilizes learning and enables higher learning rates. Apply after linear/conv layers, before activation.",
+      "metadata": {
+        "category": "ai",
+        "topic": "batch-norm",
+        "difficulty": "advanced"
+      },
+      "source": "ai-research",
+      "intent": [
+        "technical"
+      ]
+    },
+    {
+      "id": "ai-015",
+      "text": "Dropout prevents overfitting by randomly dropping neurons during training. Set rate (0.2-0.5), disable during inference. Simple but effective regularization technique.",
+      "metadata": {
+        "category": "ai",
+        "topic": "dropout",
+        "difficulty": "intermediate"
+      },
+      "source": "ai-research",
+      "intent": [
+        "technical"
+      ]
+    },
+    {
+      "id": "ai-016",
+      "text": "Learning rate scheduling adjusts LR during training. Strategies: step decay, exponential decay, cosine annealing, warmup. Crucial for convergence and avoiding local minima.",
+      "metadata": {
+        "category": "ai",
+        "topic": "learning-rate",
+        "difficulty": "intermediate"
+      },
+      "source": "ai-research",
+      "intent": [
+        "technical"
+      ]
+    },
+    {
+      "id": "ai-017",
+      "text": "Data augmentation artificially increases training data diversity. Images: rotation, flip, crop, color jittering. Text: back-translation, synonym replacement, paraphrasing.",
+      "metadata": {
+        "category": "ai",
+        "topic": "data-augmentation",
+        "difficulty": "intermediate"
+      },
+      "source": "ai-research",
+      "intent": [
+        "technical"
+      ]
+    },
+    {
+      "id": "ai-018",
+      "text": "Gradient descent optimizers: SGD (simple), Adam (adaptive, popular), RMSprop, AdaGrad. Adam combines momentum and adaptive learning rates, good default choice.",
+      "metadata": {
+        "category": "ai",
+        "topic": "optimizers",
+        "difficulty": "intermediate"
+      },
+      "source": "ai-research",
+      "intent": [
+        "technical"
+      ]
+    },
+    {
+      "id": "mlops-006",
+      "text": "Model versioning tracks model changes over time. Use semantic versioning (major.minor.patch), store metadata (metrics, hyperparameters), link to training data version.",
+      "metadata": {
+        "category": "mlops",
+        "topic": "versioning",
+        "difficulty": "intermediate"
+      },
+      "source": "mlops-handbook",
+      "intent": [
+        "technical"
+      ]
+    },
+    {
+      "id": "mlops-007",
+      "text": "Data versioning with DVC (Data Version Control) tracks datasets and models with Git-like interface. Store large files externally, version in Git. Enables reproducibility.",
+      "metadata": {
+        "category": "mlops",
+        "topic": "dvc",
+        "difficulty": "intermediate"
+      },
+      "source": "mlops-handbook",
+      "intent": [
+        "technical",
+        "development"
+      ]
+    },
+    {
+      "id": "mlops-008",
+      "text": "Model registry centralizes model storage, versioning, and deployment. Features: model lineage, staging (dev/staging/prod), approval workflows, rollback capabilities.",
+      "metadata": {
+        "category": "mlops",
+        "topic": "model-registry",
+        "difficulty": "intermediate"
+      },
+      "source": "mlops-handbook",
+      "intent": [
+        "technical"
+      ]
+    },
+    {
+      "id": "mlops-009",
+      "text": "CI/CD for ML: automate training, testing, validation, and deployment. Test data quality, model performance, API endpoints. Use Jenkins, GitHub Actions, or GitLab CI.",
+      "metadata": {
+        "category": "mlops",
+        "topic": "ci-cd",
+        "difficulty": "advanced"
+      },
+      "source": "mlops-handbook",
+      "intent": [
+        "technical",
+        "development"
+      ]
+    },
+    {
+      "id": "mlops-010",
+      "text": "Model explainability: SHAP and LIME explain individual predictions, feature importance shows global patterns. Essential for trust, debugging, and regulatory compliance.",
+      "metadata": {
+        "category": "mlops",
+        "topic": "explainability",
+        "difficulty": "advanced"
+      },
+      "source": "mlops-handbook",
+      "intent": [
+        "technical"
+      ]
+    },
+    {
+      "id": "security-006",
+      "text": "Cross-Site Scripting (XSS) injects malicious scripts into web pages. Prevent by sanitizing user input, escaping output, using Content Security Policy (CSP) headers.",
+      "metadata": {
+        "category": "security",
+        "topic": "xss",
+        "difficulty": "intermediate"
+      },
+      "source": "security-handbook",
+      "intent": [
+        "technical",
+        "security"
+      ]
+    },
+    {
+      "id": "security-007",
+      "text": "Cross-Site Request Forgery (CSRF) tricks users into executing unwanted actions. Prevent with CSRF tokens, SameSite cookies, checking Referer header.",
+      "metadata": {
+        "category": "security",
+        "topic": "csrf",
+        "difficulty": "intermediate"
+      },
+      "source": "security-handbook",
+      "intent": [
+        "technical",
+        "security"
+      ]
+    },
+    {
+      "id": "security-008",
+      "text": "Password hashing: never store plain passwords. Use bcrypt, Argon2, or PBKDF2 with salt. Hash is one-way, verify by hashing input and comparing. Set appropriate work factor.",
+      "metadata": {
+        "category": "security",
+        "topic": "passwords",
+        "difficulty": "intermediate"
+      },
+      "source": "security-handbook",
+      "intent": [
+        "technical",
+        "security"
+      ]
+    },
+    {
+      "id": "security-009",
+      "text": "Rate limiting prevents abuse and DoS attacks. Implement at API level (requests per IP/user), use Redis for distributed systems, return 429 status when exceeded.",
+      "metadata": {
+        "category": "security",
+        "topic": "rate-limiting",
+        "difficulty": "intermediate"
+      },
+      "source": "security-handbook",
+      "intent": [
+        "technical",
+        "security",
+        "development"
+      ]
+    },
+    {
+      "id": "security-010",
+      "text": "Input validation: whitelist valid inputs rather than blacklist bad ones, validate data type/format/length, never trust client-side validation alone.",
+      "metadata": {
+        "category": "security",
+        "topic": "validation",
+        "difficulty": "beginner"
+      },
+      "source": "security-handbook",
+      "intent": [
+        "technical",
+        "security"
+      ]
+    }
+  ],
+  "embeddings": [],
+  "intent_mapping": {
+    "technical": [
+      "devops-001",
+      "devops-002",
+      "devops-003",
+      "devops-004",
+      "devops-005",
+      "linux-001",
+      "linux-002",
+      "linux-003",
+      "linux-004",
+      "linux-005",
+      "ai-001",
+      "ai-002",
+      "ai-003",
+      "ai-004",
+      "ai-005",
+      "ai-006",
+      "ai-007",
+      "ai-008",
+      "mlops-001",
+      "mlops-002",
+      "mlops-003",
+      "mlops-004",
+      "mlops-005",
+      "security-001",
+      "security-002",
+      "security-003",
+      "security-004",
+      "security-005",
+      "devops-006",
+      "devops-007",
+      "devops-008",
+      "linux-006",
+      "linux-007",
+      "ai-009",
+      "ai-010",
+      "devops-009",
+      "devops-010",
+      "devops-011",
+      "devops-012",
+      "devops-013",
+      "devops-014",
+      "devops-015",
+      "devops-016",
+      "devops-017",
+      "devops-018",
+      "devops-019",
+      "devops-020",
+      "linux-008",
+      "linux-009",
+      "linux-010",
+      "linux-011",
+      "linux-012",
+      "linux-013",
+      "linux-014",
+      "linux-015",
+      "ai-011",
+      "ai-012",
+      "ai-013",
+      "ai-014",
+      "ai-015",
+      "ai-016",
+      "ai-017",
+      "ai-018",
+      "mlops-006",
+      "mlops-007",
+      "mlops-008",
+      "mlops-009",
+      "mlops-010",
+      "security-006",
+      "security-007",
+      "security-008",
+      "security-009",
+      "security-010"
+    ],
+    "development": [
+      "devops-001",
+      "devops-002",
+      "devops-003",
+      "devops-004",
+      "devops-005",
+      "python-001",
+      "python-002",
+      "python-005",
+      "ai-008",
+      "mlops-001",
+      "mlops-002",
+      "mlops-004",
+      "security-003",
+      "security-005",
+      "devops-006",
+      "devops-007",
+      "devops-008",
+      "python-006",
+      "python-007",
+      "devops-009",
+      "devops-011",
+      "devops-019",
+      "mlops-007",
+      "mlops-009",
+      "security-009"
+    ],
+    "security": [
+      "linux-003",
+      "security-001",
+      "security-002",
+      "security-003",
+      "security-004",
+      "security-005",
+      "linux-006",
+      "devops-017",
+      "devops-018",
+      "security-006",
+      "security-007",
+      "security-008",
+      "security-009",
+      "security-010"
+    ],
+    "code": [
+      "python-001",
+      "python-002",
+      "python-003",
+      "python-004",
+      "python-005",
+      "ai-005",
+      "python-006",
+      "python-007",
+      "python-008",
+      "python-009",
+      "python-010",
+      "python-011",
+      "python-012",
+      "python-013",
+      "python-014",
+      "python-015",
+      "python-016"
+    ]
+  }
+}

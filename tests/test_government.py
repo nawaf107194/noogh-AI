@@ -23,10 +23,10 @@ async def test_president_initializes_real_ministers(president):
     Test that the president initializes real, functional ministers
     instead of placeholders.
     """
-    assert president.ministers, "Ministers dictionary should not be empty"
+    assert president.cabinet, "Cabinet dictionary should not be empty"
     
     # Check if a specific, known minister (EducationMinister) is initialized
-    education_minister = president.ministers.get(MinisterType.EDUCATION)
+    education_minister = president.cabinet.get(MinisterType.EDUCATION.value)
     assert education_minister is not None, "Education Minister should be initialized"
     assert isinstance(education_minister, EducationMinister), "Should be a real instance of EducationMinister"
     
@@ -36,11 +36,11 @@ async def test_president_initializes_real_ministers(president):
 @pytest.mark.asyncio
 async def test_consult_ministers_calls_real_minister(president):
     """
-    Test that _consult_ministers now calls the real execute_task method
+    Test that process_request calls the real execute_task method
     on a minister, instead of simulating a result.
     """
     # Get the real education minister to spy on it
-    education_minister = president.ministers.get(MinisterType.EDUCATION)
+    education_minister = president.cabinet.get(MinisterType.EDUCATION.value)
     assert education_minister is not None
     
     # Mock the real minister's execute_task method to act as a spy
@@ -59,17 +59,10 @@ async def test_consult_ministers_calls_real_minister(president):
 
         # Define a request that should be routed to the Education Minister
         user_input = "شرح لي كيفية عمل لغة بايثون"
-        task_understanding = president._understand_task(user_input, None)
-        required_ministers = president._determine_required_ministers(user_input, task_understanding)
         
-        # Ensure the Education Minister is selected
-        assert MinisterType.EDUCATION in required_ministers, "Education minister should be selected for this task"
-
         # Call the method under test
-        results = await president._consult_ministers(
-            ministers_to_consult=required_ministers,
+        result = await president.process_request(
             user_input=user_input,
-            task_understanding=task_understanding,
             priority="medium"
         )
 
@@ -77,12 +70,7 @@ async def test_consult_ministers_calls_real_minister(president):
         # 1. Check that the minister's execute_task was actually called
         mock_execute_task.assert_called_once()
         
-        # 2. Check that the result is not the old simulation
-        assert "response" not in results.get("education", {}), "The old 'response' key from simulation should not exist"
-        assert "result" in results.get("education", {}), "The new structure with 'result' should exist"
-        
-        # 3. Check that the result contains the data from our mock
-        final_result = results.get("education", {}).get("result", {})
-        assert final_result.get("message") == "Mocked real execution"
+        # 2. Check that the result contains the data from our mock
+        assert result.get("result", {}).get("message") == "Mocked real execution"
         
         print("\n✅ Test passed: President successfully called the real minister's execute_task method.")

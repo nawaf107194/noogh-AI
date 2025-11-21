@@ -13,18 +13,14 @@ import torch
 import torch.nn as nn
 from typing import Optional, Dict, Any, List, Union
 from pathlib import Path
-import sys
 import logging
 import asyncio
-
-# إضافة المسار
-sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
 logger = logging.getLogger(__name__)
 
 # Import AutonomousClient for resource management
 try:
-    from api.utils.autonomous_client import AutonomousClient
+    from ..clients.autonomous_client import AutonomousClient, SyncAutonomousClient
     AUTONOMOUS_CLIENT_AVAILABLE = True
 except ImportError:
     AUTONOMOUS_CLIENT_AVAILABLE = False
@@ -35,7 +31,7 @@ except ImportError:
 # ============================================================================
 
 try:
-    from api.utils.device_manager import get_device_manager
+    from ..api.utils.device_manager import get_device_manager
 except ImportError:
     class SimpleDeviceManager:
         def get_device(self):
@@ -60,12 +56,12 @@ except ImportError:
         return SimpleDeviceManager()
 
 try:
-    from training.trainer import HybridTrainer
+    from ..training.trainer import HybridTrainer
 except ImportError:
     HybridTrainer = None
 
 try:
-    from brain.enhanced_brain import KnowledgeGraph, VectorStore, ReasoningEngine
+    from .enhanced_brain import KnowledgeGraph, VectorStore, ReasoningEngine
     ADVANCED_FEATURES = True
 except ImportError:
     ADVANCED_FEATURES = False
@@ -366,7 +362,7 @@ class UnifiedNooghBrain:
         if self.use_autonomous:
             try:
                 # Create sync client wrapper for use in __init__
-                from api.utils.autonomous_client import SyncAutonomousClient
+                from ..clients.autonomous_client import SyncAutonomousClient
                 self.autonomous_client = SyncAutonomousClient()
                 if self.verbose:
                     logger.info("🤖 Autonomous System: ✅ Connected")
@@ -379,8 +375,8 @@ class UnifiedNooghBrain:
         self.hf = None
         self.hf_inference = None
         try:
-            from integrations.hf_hub_client import HFHubClient
-            from integrations.hf_inference_client import HFInferenceClient
+            from ..integrations.hf_hub_client import HFHubClient
+            from ..integrations.hf_inference_client import HFInferenceClient
 
             self.hf = HFHubClient(token=None, org=None, verbose=False)
             self.hf_inference = HFInferenceClient(token=None, verbose=False)

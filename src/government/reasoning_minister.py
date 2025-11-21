@@ -21,7 +21,7 @@ class ReasoningMinister(BaseMinister):
     وزير الاستدلال - المسؤول عن التفكير المنطقي وحل المشاكل المعقدة
     """
     
-    def __init__(self, verbose: bool = True):
+    def __init__(self, verbose: bool = True, brain_hub: Any = None):
         super().__init__(
             minister_type=MinisterType.REASONING,
             name="Reasoning Minister",
@@ -29,6 +29,8 @@ class ReasoningMinister(BaseMinister):
             verbose=verbose,
             specialty="التفكير المنطقي وحل المشاكل",
             description="المسؤول عن التفكير المنطقي وحل المشاكل المعقدة والاستدلال"
+        ,
+            brain_hub=brain_hub
         )
         
     def _can_handle_specific_task(self, task_type: str, task_data: Dict[str, Any]) -> bool:

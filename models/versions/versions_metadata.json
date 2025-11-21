@@ -205,7 +205,75 @@
       "training_params": {},
       "is_active": false,
       "is_baseline": false
+    },
+    {
+      "version_id": "v2025-11-17_06-59-52",
+      "timestamp": "2025-11-17T06:59:52.393805",
+      "model_path": "models/simulated_model",
+      "performance_metrics": {
+        "accuracy": 0.9308548181187813,
+        "avg_response_time_ms": 11.731632573454235,
+        "cognition_score": 0.9558548181187814,
+        "success_rate": 0.9763335069261626,
+        "memory_usage_mb": 702.0556652796674,
+        "test_samples": 1000,
+        "timestamp": "2025-11-17T06:59:52.382792"
+      },
+      "training_params": {},
+      "is_active": false,
+      "is_baseline": false
+    },
+    {
+      "version_id": "v2025-11-18_06-59-55",
+      "timestamp": "2025-11-18T06:59:55.623397",
+      "model_path": "models/simulated_model",
+      "performance_metrics": {
+        "accuracy": 0.9778870081026005,
+        "avg_response_time_ms": 14.156974112070397,
+        "cognition_score": 1.0,
+        "success_rate": 0.9997813477425391,
+        "memory_usage_mb": 634.8629772931548,
+        "test_samples": 1000,
+        "timestamp": "2025-11-18T06:59:55.572892"
+      },
+      "training_params": {},
+      "is_active": false,
+      "is_baseline": false
+    },
+    {
+      "version_id": "v2025-11-19_06-59-58",
+      "timestamp": "2025-11-19T06:59:58.876725",
+      "model_path": "models/simulated_model",
+      "performance_metrics": {
+        "accuracy": 0.9199438490626742,
+        "avg_response_time_ms": 18.404997249509805,
+        "cognition_score": 0.9449438490626743,
+        "success_rate": 0.9636261995698286,
+        "memory_usage_mb": 671.197809990796,
+        "test_samples": 1000,
+        "timestamp": "2025-11-19T06:59:58.865314"
+      },
+      "training_params": {},
+      "is_active": false,
+      "is_baseline": false
+    },
+    {
+      "version_id": "v2025-11-20_07-00-02",
+      "timestamp": "2025-11-20T07:00:02.165095",
+      "model_path": "models/simulated_model",
+      "performance_metrics": {
+        "accuracy": 1.0,
+        "avg_response_time_ms": 15.387553375767688,
+        "cognition_score": 1.0,
+        "success_rate": 0.9529620074297421,
+        "memory_usage_mb": 615.6152915591674,
+        "test_samples": 1000,
+        "timestamp": "2025-11-20T07:00:02.154194"
+      },
+      "training_params": {},
+      "is_active": false,
+      "is_baseline": false
     }
   ],
-  "last_updated": "2025-11-16T06:59:49.236296"
+  "last_updated": "2025-11-20T07:00:02.165209"
 }

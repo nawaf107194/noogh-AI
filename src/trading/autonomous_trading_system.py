@@ -11,10 +11,6 @@ from typing import Dict, List, Optional
 from datetime import datetime, timedelta
 from dataclasses import dataclass, asdict
 import json
-import sys
-
-# Add project root to path
-sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
 from src.trading.live_market_data_collector import LiveMarketDataCollector, MarketCandle
 from src.trading.trading_model_trainer import TradingModelTrainer, TrainingConfig, TrainingResult
@@ -203,14 +199,19 @@ class AutonomousTradingSystem:
                             logger.info(f"      🏛️ President advice received")
 
                     # تدريب النموذج
-                    training_result = await self.trainer.train(dataset)
+                    if self.use_multi_trainer:
+                        # For multi-trainer, batch training is done later
+                        logger.info(f"      ⏭️ Queueing {symbol} for batch training")
+                        training_result = None
+                    else:
+                        training_result = await self.trainer.train(dataset)
 
-                    if training_result.status == "success":
+                    if training_result and training_result.status == "success":
                         logger.info(f"      ✅ Model trained: Accuracy {training_result.accuracy:.2%}")
                         self.last_training_date[symbol] = datetime.now()
                         models_trained += 1
                         self.total_models_trained += 1
-                    else:
+                    elif training_result:
                         logger.warning(f"      ⚠️ Training failed for {symbol}")
                 else:
                     logger.info(f"   ⏭️ Skipping {symbol} (trained recently)")
@@ -329,13 +330,19 @@ class AutonomousTradingSystem:
     def get_trading_stats(self) -> Dict:
         """إحصائيات نظام التداول"""
 
+        # Get trainer stats safely based on which trainer is being used
+        if self.use_multi_trainer:
+            trainer_stats = self.multi_trainer.get_stats() if hasattr(self.multi_trainer, 'get_stats') else {}
+        else:
+            trainer_stats = self.trainer.get_stats() if hasattr(self.trainer, 'get_stats') else {}
+
         return {
             'cycles_completed': self.cycles_completed,
             'total_signals_generated': self.total_signals_generated,
             'total_models_trained': self.total_models_trained,
             'symbols': self.symbols,
             'data_collector': self.data_collector.get_stats(),
-            'trainer': self.trainer.get_stats(),
+            'trainer': trainer_stats,
             'predictor': self.predictor.get_stats()
         }
 

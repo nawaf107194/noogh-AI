@@ -24,7 +24,7 @@ class CreativityMinister(BaseMinister):
     وزير الإبداع - مسؤول عن توليد الأفكار والابتكار والعصف الذهني
     """
 
-    def __init__(self, verbose: bool = True):
+    def __init__(self, verbose: bool = True, brain_hub: Any = None):
         super().__init__(
             minister_type=MinisterType.CREATIVITY,
             name="Creativity Minister",
@@ -32,6 +32,8 @@ class CreativityMinister(BaseMinister):
             verbose=verbose,
             specialty="Idea Generation and Innovation",
             description="توليد أفكار، إبداع، ابتكار، عصف ذهني"
+        ,
+            brain_hub=brain_hub
         )
 
     def _can_handle_specific_task(self, task_type: str, task_data: Dict[str, Any]) -> bool:
