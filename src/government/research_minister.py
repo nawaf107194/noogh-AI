@@ -5,10 +5,7 @@ Research Minister - وزير البحث والتطوير
 Responsible for scientific research, paper analysis, and innovation proposals
 """
 
-import sys
 from pathlib import Path
-sys.path.insert(0, str(Path(__file__).parent.parent.parent))
-
 import logging
 from typing import Dict, Any, Optional
 from datetime import datetime

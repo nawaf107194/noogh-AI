@@ -8,14 +8,8 @@ Audit Scheduler - مُجدول التدقيق الدوري
 from typing import Dict, Any, Optional, Callable
 from datetime import datetime, timezone, timedelta
 from dataclasses import dataclass
-import threading
-import time
-import schedule
-import sys
+import asyncio
 from pathlib import Path
-
-sys.path.insert(0, str(Path(__file__).parent.parent.parent))
-
 from audit.self_audit_engine import SelfAuditEngine, AuditReport
 from audit.automated_tests_extended import ExtendedAutomatedTests
 
@@ -31,7 +25,7 @@ class ScheduleConfig:
 
 class AuditScheduler:
     """
-    مُجدول التدقيق الدوري
+    مُجدول التدقيق الدوري (Async)
 
     يقوم بـ:
     1. تشغيل تدقيق دوري (أسبوعي افتراضياً)
@@ -61,41 +55,36 @@ class AuditScheduler:
 
         # حالة الجدولة
         self.is_running = False
-        self._thread: Optional[threading.Thread] = None
-        self._stop_event = threading.Event()
+        self._task: Optional[asyncio.Task] = None
+        self._stop_event = asyncio.Event()
 
         # آخر تدقيق
         self.last_audit_time: Optional[datetime] = None
         self.last_audit_score: Optional[float] = None
 
-    def start(self):
-        """بدء الجدولة"""
+    async def start(self):
+        """بدء الجدولة (Async)"""
         if self.is_running:
             print("⚠️  Scheduler already running")
             return
 
-        print("🚀 Starting Audit Scheduler...")
+        print("🚀 Starting Audit Scheduler (Async)...")
         print(f"   Interval: Every {self.config.interval_hours} hours")
         print(f"   Run on startup: {self.config.run_on_startup}")
 
         self.is_running = True
         self._stop_event.clear()
 
-        # جدولة التدقيق الدوري
-        schedule.every(self.config.interval_hours).hours.do(self._run_scheduled_audit)
-
         # تشغيل فوري إذا مطلوب
         if self.config.run_on_startup:
-            self._run_scheduled_audit()
+            await self._run_scheduled_audit()
 
-        # بدء thread الجدولة
-        self._thread = threading.Thread(target=self._scheduler_loop, daemon=True)
-        self._thread.start()
-
+        # بدء task الجدولة
+        self._task = asyncio.create_task(self._scheduler_loop())
         print("✅ Scheduler started successfully")
 
-    def stop(self):
-        """إيقاف الجدولة"""
+    async def stop(self):
+        """إيقاف الجدولة (Async)"""
         if not self.is_running:
             return
 
@@ -103,31 +92,48 @@ class AuditScheduler:
         self.is_running = False
         self._stop_event.set()
 
-        if self._thread:
-            self._thread.join(timeout=5)
+        if self._task:
+            try:
+                await asyncio.wait_for(self._task, timeout=5.0)
+            except asyncio.TimeoutError:
+                print("⚠️  Scheduler stop timed out, cancelling...")
+                self._task.cancel()
+            except asyncio.CancelledError:
+                pass
 
-        schedule.clear()
         print("✅ Scheduler stopped")
 
-    def _scheduler_loop(self):
-        """حلقة الجدولة الرئيسية"""
+    async def _scheduler_loop(self):
+        """حلقة الجدولة الرئيسية (Async)"""
+        interval_seconds = self.config.interval_hours * 3600
+        
         while self.is_running and not self._stop_event.is_set():
             try:
-                schedule.run_pending()
-                time.sleep(60)  # فحص كل دقيقة
+                # Wait for interval or stop event
+                try:
+                    await asyncio.wait_for(self._stop_event.wait(), timeout=interval_seconds)
+                    # If we get here, stop_event was set
+                    break
+                except asyncio.TimeoutError:
+                    # Timeout means interval passed, run audit
+                    await self._run_scheduled_audit()
+                    
+            except asyncio.CancelledError:
+                break
             except Exception as e:
                 print(f"❌ Scheduler error: {e}")
-                time.sleep(60)
+                await asyncio.sleep(60)  # Wait a bit before retrying on error
 
-    def _run_scheduled_audit(self):
+    async def _run_scheduled_audit(self):
         """تشغيل تدقيق مجدول"""
         try:
             print(f"\n{'=' * 70}")
             print(f"🔄 Running Scheduled Audit - {datetime.now(timezone.utc).isoformat()}")
             print(f"{'=' * 70}\n")
 
-            # تشغيل التدقيق
-            report = self.engine.run_full_audit()
+            # تشغيل التدقيق (running sync engine in executor to avoid blocking)
+            loop = asyncio.get_running_loop()
+            report = await loop.run_in_executor(None, self.engine.run_full_audit)
 
             # حفظ الحالة
             self.last_audit_time = report.timestamp
@@ -145,11 +151,17 @@ class AuditScheduler:
                 print(f"   Drop:     {(prev_score - report.overall_score)*100:.1f}%\n")
 
                 if self.on_consciousness_drop:
-                    self.on_consciousness_drop(report, prev_score)
+                    if asyncio.iscoroutinefunction(self.on_consciousness_drop):
+                        await self.on_consciousness_drop(report, prev_score)
+                    else:
+                        self.on_consciousness_drop(report, prev_score)
 
             # callback اكتمال التدقيق
             if self.on_audit_complete:
-                self.on_audit_complete(report)
+                if asyncio.iscoroutinefunction(self.on_audit_complete):
+                    await self.on_audit_complete(report)
+                else:
+                    self.on_audit_complete(report)
 
             # تنظيف السجلات القديمة
             self._cleanup_old_audits()
@@ -188,24 +200,21 @@ class AuditScheduler:
         # يمكن إضافة منطق الحذف من قاعدة البيانات هنا
         print(f"🗑️  Cleanup: Keeping audits newer than {cutoff_date.date()}")
 
-    def run_audit_now(self) -> AuditReport:
+    async def run_audit_now(self) -> AuditReport:
         """تشغيل تدقيق فوري"""
         print("⚡ Running immediate audit...")
-        return self.engine.run_full_audit()
+        loop = asyncio.get_running_loop()
+        return await loop.run_in_executor(None, self.engine.run_full_audit)
 
     def get_status(self) -> Dict[str, Any]:
         """الحصول على حالة الجدولة"""
-        next_run = None
-        if self.is_running and schedule.jobs:
-            next_run = schedule.next_run()
-
         return {
             "is_running": self.is_running,
             "interval_hours": self.config.interval_hours,
             "last_audit_time": self.last_audit_time.isoformat() if self.last_audit_time else None,
             "last_audit_score": self.last_audit_score,
-            "next_run": next_run.isoformat() if next_run else None,
-            "scheduled_jobs": len(schedule.jobs)
+            "next_run": "Async Loop Active" if self.is_running else None,
+            "scheduled_jobs": 1 if self.is_running else 0
         }
 
 
@@ -250,31 +259,36 @@ if __name__ == "__main__":
         on_consciousness_drop=on_consciousness_drop_callback
     )
 
-    if args.mode == "start":
-        print("🚀 Starting scheduler in daemon mode...")
-        scheduler.start()
+    async def main():
+        if args.mode == "start":
+            print("🚀 Starting scheduler in daemon mode...")
+            await scheduler.start()
 
-        try:
-            # Keep running
-            while True:
-                time.sleep(60)
-                status = scheduler.get_status()
-                if status["next_run"]:
-                    print(f"⏰ Next audit: {status['next_run']}")
-        except KeyboardInterrupt:
-            print("\n\n⚠️  Received interrupt signal")
-            scheduler.stop()
+            try:
+                # Keep running
+                while True:
+                    await asyncio.sleep(60)
+                    status = scheduler.get_status()
+                    # print(f"Status: {status}")
+            except KeyboardInterrupt:
+                print("\n\n⚠️  Received interrupt signal")
+                await scheduler.stop()
 
-    elif args.mode == "once":
-        print("⚡ Running single audit...")
-        report = scheduler.run_audit_now()
-        print(f"\n✅ Audit complete: {report.overall_score*100:.1f}% ({report.consciousness_level.name})")
+        elif args.mode == "once":
+            print("⚡ Running single audit...")
+            report = await scheduler.run_audit_now()
+            print(f"\n✅ Audit complete: {report.overall_score*100:.1f}% ({report.consciousness_level.name})")
 
-    elif args.mode == "status":
-        scheduler.start()
-        time.sleep(1)
-        status = scheduler.get_status()
-        print("\n📊 Scheduler Status:")
-        for key, value in status.items():
-            print(f"   {key}: {value}")
-        scheduler.stop()
+        elif args.mode == "status":
+            await scheduler.start()
+            await asyncio.sleep(1)
+            status = scheduler.get_status()
+            print("\n📊 Scheduler Status:")
+            for key, value in status.items():
+                print(f"   {key}: {value}")
+            await scheduler.stop()
+
+    try:
+        asyncio.run(main())
+    except KeyboardInterrupt:
+        pass

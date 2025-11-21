@@ -15,14 +15,10 @@ from fastapi import APIRouter, HTTPException
 from typing import Dict, Any, List
 import logging
 from pathlib import Path
-import sys
 import time
 from datetime import datetime
-
 # Add project root to path
 PROJECT_ROOT = Path(__file__).parent.parent.parent.parent
-sys.path.insert(0, str(PROJECT_ROOT))
-
 from api.services.system_status import (
     get_system_overview,
     get_ministers_status,

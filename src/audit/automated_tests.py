@@ -7,10 +7,7 @@ import asyncio
 from typing import Dict, Any
 
 # Add project root to path to allow imports
-import sys
 from pathlib import Path
-sys.path.insert(0, str(Path(__file__).parent.parent.parent))
-
 from src.government.president import President
 
 def run_async(coro):

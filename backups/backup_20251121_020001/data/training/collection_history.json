@@ -1,0 +1,13 @@
+[
+  {
+    "total_samples": 20,
+    "train_count": 16,
+    "test_count": 4,
+    "task_type": "general",
+    "sources": [
+      "synthetic"
+    ],
+    "duration_seconds": 0.100368,
+    "timestamp": "2025-11-20T16:52:10.430078"
+  }
+]

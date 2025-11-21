@@ -8,12 +8,8 @@ Training Router - AI Training Data Management
 from fastapi import APIRouter, HTTPException, Depends, Query
 from pydantic import BaseModel
 from typing import List, Optional, Dict
-import sys
 from pathlib import Path
-
 # Add core to path
-sys.path.insert(0, str(Path(__file__).parent.parent.parent))
-
 from training.data_loader import get_training_data_loader, TrainingDataLoader
 from api.auth import get_current_user, User
 

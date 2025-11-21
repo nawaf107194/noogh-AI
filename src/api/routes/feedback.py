@@ -18,7 +18,6 @@ Endpoints:
 - GET  /api/feedback/summary          → Comprehensive feedback summary
 """
 
-import sys
 from pathlib import Path
 from typing import Optional
 from fastapi import APIRouter, HTTPException
@@ -26,11 +25,8 @@ from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from datetime import datetime
 import logging
-
 # Add project root
 PROJECT_ROOT = Path(__file__).parent.parent.parent
-sys.path.insert(0, str(PROJECT_ROOT))
-
 from autonomy.feedback_collector import get_feedback_collector
 from autonomy.brain_adjuster import get_brain_adjuster
 

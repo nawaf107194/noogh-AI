@@ -5,10 +5,7 @@ Strategy Minister - وزير الاستراتيجية
 Responsible for strategic planning, SWOT analysis, and priority setting
 """
 
-import sys
 from pathlib import Path
-sys.path.insert(0, str(Path(__file__).parent.parent.parent))
-
 import logging
 from typing import Dict, Any, Optional
 from datetime import datetime

@@ -29,6 +29,7 @@ export API_PORT="${API_PORT:-8000}"
 export MCP_PORT="${MCP_PORT:-8001}"
 export DASHBOARD_PORT="${DASHBOARD_PORT:-3000}"
 export LOG_LEVEL="${LOG_LEVEL:-info}"
+export NOOGH_ENV="${NOOGH_ENV:-development}"
 
 # Data directories
 export DATA_DIR="${PROJECT_ROOT}/data"
@@ -116,7 +117,7 @@ run_api() {
         --workers 2 \
         --log-level "$LOG_LEVEL" \
         --access-log \
-        --log-config logging.conf 2>&1 | tee "$LOGS_DIR/api.log"
+        --access-log 2>&1 | tee "$LOGS_DIR/api.log"
 }
 
 run_mcp() {
@@ -137,22 +138,16 @@ run_mcp() {
     "$PYTHON" scripts/mcp_server.py 2>&1 | tee "$LOGS_DIR/mcp.log"
 }
 
+# React Dashboard has been archived - use Streamlit instead
+# To run the dashboard, use: ./scripts/start_sovereign_system.sh
+# Or run Streamlit directly: ./venv/bin/streamlit run src/interface/dashboard.py
 run_dashboard() {
-    log_section "📊 Starting Dashboard"
-
-    cd src/dashboard
-
-    if [ ! -d "node_modules" ]; then
-        log_info "Installing dashboard dependencies..."
-        npm install
-    fi
-
-    if check_port "$DASHBOARD_PORT"; then
-        log_warn "Port $DASHBOARD_PORT is already in use"
-    fi
-
-    log_info "Starting dashboard on http://localhost:$DASHBOARD_PORT"
-    npm run dev -- --port "$DASHBOARD_PORT"
+    log_error "React Dashboard has been removed from this project."
+    log_info "Use Streamlit Dashboard instead:"
+    log_info "  ./scripts/start_sovereign_system.sh"
+    log_info "  OR"
+    log_info "  ./venv/bin/streamlit run src/interface/dashboard.py --server.port 8501"
+    exit 1
 }
 
 run_all() {
@@ -247,11 +242,12 @@ Commands:
   test         Run smoke tests
   api          Run FastAPI server only
   mcp          Run MCP server only
-  dashboard    Run Dashboard only
   all          Run all components in background
   stop         Stop all running components
   status       Show status of all components
   help         Show this help message
+
+Note: For Dashboard, use ./scripts/start_sovereign_system.sh (Streamlit)
 
 Environment Variables:
   API_HOST        API server host (default: 0.0.0.0)

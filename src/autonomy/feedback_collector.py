@@ -10,7 +10,6 @@ Features:
 - Store feedback history for learning
 """
 
-import sys
 from pathlib import Path
 from typing import Dict, List, Optional, Any, Tuple
 from dataclasses import dataclass, asdict
@@ -18,11 +17,8 @@ from datetime import datetime, timedelta
 from collections import defaultdict, deque
 from enum import Enum
 import logging
-
 # Add project root
 PROJECT_ROOT = Path(__file__).parent.parent.parent
-sys.path.insert(0, str(PROJECT_ROOT))
-
 logger = logging.getLogger(__name__)
 
 

@@ -4,15 +4,13 @@
 Performance Monitor
 """
 
-import sys
 from pathlib import Path
 import time
-
+import sys
 # Add parent to path
 PARENT_DIR = Path(__file__).parent.parent
 if str(PARENT_DIR) not in sys.path:
-    sys.path.insert(0, str(PARENT_DIR))
-
+    sys.path.append(str(PARENT_DIR))
 class PerformanceMonitor:
     def __init__(self):
         self.start_time = time.time()

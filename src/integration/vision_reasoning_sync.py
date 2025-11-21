@@ -16,13 +16,8 @@ from typing import Dict, Any, List, Optional, Tuple
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from enum import Enum
-from pathlib import Path
 import os
-import sys
-
 # إضافة مسار المشروع
-sys.path.insert(0, str(Path(__file__).parent.parent.parent))
-
 
 class ModalityType(str, Enum):
     """نوع الوسيط"""

@@ -11,12 +11,8 @@ import time
 from datetime import datetime, timedelta
 from collections import deque
 from pathlib import Path
-import sys
-
 # Add project root to path
 PROJECT_ROOT = Path(__file__).parent.parent.parent
-sys.path.insert(0, str(PROJECT_ROOT))
-
 from integration.unified_brain_hub import get_brain_hub
 
 # Import Ministers

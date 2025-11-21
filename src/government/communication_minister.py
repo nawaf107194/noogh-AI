@@ -12,10 +12,7 @@ Features:
 - ✅ User interaction management
 """
 
-import sys
 from pathlib import Path
-sys.path.insert(0, str(Path(__file__).parent.parent.parent))
-
 import asyncio
 import logging
 from typing import Dict, Any, Optional, List

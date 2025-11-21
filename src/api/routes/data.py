@@ -9,18 +9,16 @@ Data Management Endpoints
 
 from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, BackgroundTasks
 from typing import Dict, Any, List, Optional
-import sys
 from pathlib import Path
 import json
 import pandas as pd
 import csv
 from datetime import datetime, timezone
-
+import sys
 # استخدام BASE_DIR من config بدلاً من hardcoded path
 from src.core.config import BASE_DIR
 if str(BASE_DIR) not in sys.path:
-    sys.path.insert(0, str(BASE_DIR))
-
+    sys.path.append(str(BASE_DIR))
 from ..models import APIResponse, DataSource, DataQuery
 from ..auth import get_current_user, require_permission, Permission, User
 from api.utils.logger import get_logger, LogCategory

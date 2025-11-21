@@ -14,13 +14,9 @@ from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 from typing import Optional, List, Dict, Any
 import logging
-import sys
 from pathlib import Path
-
 # Add project root
 PROJECT_ROOT = Path(__file__).parent.parent.parent
-sys.path.insert(0, str(PROJECT_ROOT))
-
 from knowledge.kernel import create_knowledge_kernel
 
 # Import validators for input sanitization
@@ -80,7 +76,7 @@ async def initialize():
         logger.info("🚀 Initializing Knowledge Kernel v4.1...")
 
         knowledge_kernel = create_knowledge_kernel(
-            enable_brain=False,  # CPU expensive
+            enable_brain=True,  # ✅ تفعيل العقل المحلي
             enable_allam=True,
             enable_intent_routing=True,
             enable_web_search=True,

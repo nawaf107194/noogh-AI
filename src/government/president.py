@@ -7,20 +7,17 @@ Noogh Government System - President
 Version: 3.0.0 - Simplified Implementation
 """
 
-import sys
-from pathlib import Path
-sys.path.insert(0, str(Path(__file__).parent.parent.parent))
-
 import asyncio
 import logging
 from typing import Dict, Any, Optional, List
 from datetime import datetime
 
-from ..nlp.intent import IntentRouter, Intent
-from ..knowledge.kernel import KnowledgeKernelV41
-from .base_minister import BaseMinister, Priority
+from src.nlp.intent import IntentRouter, Intent
+from src.knowledge.kernel import KnowledgeKernelV41
+from src.government.base_minister import BaseMinister, Priority
 
 logger = logging.getLogger(__name__)
+
 
 
 class President:
@@ -41,7 +38,19 @@ class President:
         """
         self.verbose = verbose
 
+        # Neural Core - Local Brain (Meta-Llama-3-8B on RTX 5070)
+        # ⚠️ CRITICAL: Initialize brain BEFORE cabinet so ministers can receive it
+        try:
+            from src.services.local_brain_service import LocalBrainService
+            self.brain = LocalBrainService()
+            if self.verbose:
+                logger.info("🧠 Neural Core initialized (Meta-Llama-3-8B)")
+        except Exception as e:
+            logger.warning(f"⚠️ Neural Core not available: {e}")
+            self.brain = None
+
         # Cabinet - مجلس الوزراء
+        # Ministers will receive brain instance during initialization
         self.cabinet: Dict[str, BaseMinister] = {}
         self.initialize_cabinet()
 
@@ -61,18 +70,40 @@ class President:
             logger.info("   IntentRouter is now responsible for dispatch.")
 
     def initialize_cabinet(self):
-        """Initialize and register all available ministers."""
-        from .education_minister import EducationMinister
-        from .security_minister import SecurityMinister
-        from .development_minister import DevelopmentMinister
-        from .communication_minister import CommunicationMinister
-
+        """
+        Initialize the cabinet with AI-powered ministers.
+        
+        Each minister gets access to the LocalBrainService for intelligence.
+        """
+        logger.info("Initializing Smart Cabinet...")
+        
+        # Get brain instance for ministers
+        brain = self.brain if hasattr(self, 'brain') and self.brain else None
+        
+        if brain is None:
+            logger.warning("⚠️ LocalBrainService not available, ministers will have limited capability")
+        
+        # Import all ministers
+        from src.government.ministers.education_minister import EducationMinister
+        from src.government.ministers.security_minister import SecurityMinister
+        from src.government.ministers.development_minister import DevelopmentMinister
+        from src.government.ministers.finance_minister import FinanceMinister
+        from src.government.ministers.health_minister import HealthMinister
+        from src.government.ministers.foreign_minister import ForeignMinister
+        from src.government.ministers.communication_minister import CommunicationMinister
+        
+        # Initialize complete cabinet (7 ministers)
         self.cabinet = {
-            "education": EducationMinister(),
-            "security": SecurityMinister(),
-            "development": DevelopmentMinister(),
-            "communication": CommunicationMinister()
+            "education": EducationMinister(brain=brain),
+            "security": SecurityMinister(brain=brain),
+            "development": DevelopmentMinister(brain=brain),
+            "finance": FinanceMinister(brain=brain),
+            "health": HealthMinister(brain=brain),
+            "foreign": ForeignMinister(brain=brain),
+            "communication": CommunicationMinister(brain=brain),
         }
+        
+        logger.info(f"✅ Complete Cabinet initialized with {len(self.cabinet)} AI-powered ministers")
 
     def _create_intent_map(self) -> Dict[Intent, str]:
         """Creates a mapping from Intent to minister key."""
@@ -84,7 +115,7 @@ class President:
             Intent.UNKNOWN: "education", # Default fallback
         }
 
-    async def process_request(self, user_input: str, context: Optional[dict] = None, priority: str = "medium"):
+    def process_request(self, user_input: str, context: Optional[dict] = None, priority: str = "medium") -> dict:
         """
         Process a user request through the government system.
         
@@ -94,7 +125,7 @@ class President:
             priority: أولوية المهمة
             
         Returns:
-            نتيجة المعالجة
+            dict: نتيجة المعالجة
         """
         self.total_requests += 1
         context = context or {}
@@ -143,12 +174,24 @@ class President:
                     priority_enum = Priority.MEDIUM
 
                 # Use the specific intent value as the task_type
-                minister_result = await self.cabinet[minister_key].execute_task(
-                    task_id=task_id,
-                    task_type=intent.value,
-                    task_data={"user_input": user_input, "context": context},
-                    priority=priority_enum
-                )
+                # Call minister synchronously (ministers have sync execute_task_sync fallback)
+                import asyncio
+                try:
+                    # Try to run async method in sync context
+                    loop = asyncio.new_event_loop()
+                    asyncio.set_event_loop(loop)
+                    minister_result = loop.run_until_complete(
+                        self.cabinet[minister_key].execute_task(
+                            task_id=task_id,
+                            task_type=intent.value,
+                            task_data={"user_input": user_input, "context": context},
+                            priority=priority_enum
+                        )
+                    )
+                    loop.close()
+                except Exception as async_err:
+                    logger.error(f"Async execution failed: {async_err}")
+                    raise
                 self.successful_requests += 1
                 result_data = minister_result.to_dict()
                 
@@ -161,15 +204,52 @@ class President:
                 return result_data
             except Exception as e:
                 logger.error(f"Error processing request with {minister_key}: {e}", exc_info=True)
+                # Fall through to Neural Core if minister fails
+                logger.info("⚡ Minister failed, trying Neural Core...")
+        
+        # If no minister handles it OR minister failed, use Neural Core (Brain)
+        if self.brain is not None:
+            try:
+                logger.info("🧠 Activating Neural Core (Meta-Llama-3-8B)...")
+                # Call brain synchronously
+                import asyncio
+                loop = asyncio.new_event_loop()
+                asyncio.set_event_loop(loop)
+                brain_response = loop.run_until_complete(self.brain.think(user_input, max_tokens=512))
+                loop.close()
+                
+                self.successful_requests += 1
+                
+                # Structure the brain response like a minister response
+                result_data = {
+                    "status": "completed",
+                    "task_id": f"neural_{self.total_requests}",
+                    "task_type": "neural_inference",
+                    "minister": "neural_core",
+                    "result": {
+                        "message": brain_response,
+                        "source": "Meta-Llama-3-8B-Instruct"
+                    }
+                }
+                
+                # Learn from neural interaction
+                learning_text = f"User asked: '{user_input}'. Neural Core answered: '{brain_response[:200]}...'"
+                self.kernel.learn(learning_text, metadata={"intent": "neural_inference", "minister": "neural_core"})
+                
+                return result_data
+                
+            except Exception as e:
+                logger.error(f"Error with Neural Core: {e}", exc_info=True)
                 return {
                     "success": False,
-                    "error": f"Error processing request: {str(e)}",
-                    "minister": minister_key
+                    "error": f"Neural Core error: {str(e)}",
+                    "input": user_input
                 }
         else:
+            # No minister and no brain available
             return {
                 "success": False,
-                "error": f"No suitable minister found for intent '{intent.value}'",
+                "error": f"No suitable handler found for intent '{intent.value}' and Neural Core unavailable",
                 "input": user_input
             }
 

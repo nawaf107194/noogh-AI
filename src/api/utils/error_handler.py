@@ -4,15 +4,13 @@
 Error Handler
 """
 
-import sys
 from pathlib import Path
 from enum import Enum
-
+import sys
 # Add parent to path
 PARENT_DIR = Path(__file__).parent.parent
 if str(PARENT_DIR) not in sys.path:
-    sys.path.insert(0, str(PARENT_DIR))
-
+    sys.path.append(str(PARENT_DIR))
 class NooghError(Exception):
     pass
 

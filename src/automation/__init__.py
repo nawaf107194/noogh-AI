@@ -4,15 +4,13 @@
 Automation Module - Fallback implementation for automation capabilities
 """
 
-import sys
 from pathlib import Path
 from datetime import datetime
-
+import sys
 # Add parent directory to path
 BASE_DIR = Path(__file__).parent.parent.parent
 if str(BASE_DIR) not in sys.path:
-    sys.path.insert(0, str(BASE_DIR))
-
+    sys.path.append(str(BASE_DIR))
 # Provide fallback implementation
 from enum import Enum
 

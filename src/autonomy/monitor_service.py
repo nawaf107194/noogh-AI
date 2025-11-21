@@ -10,7 +10,6 @@ Features:
 - Alert history
 """
 
-import sys
 from pathlib import Path
 from typing import Dict, List, Optional, Any, Callable
 from datetime import datetime, timedelta
@@ -19,11 +18,8 @@ import asyncio
 import logging
 import json
 from collections import deque
-
 # Add project root
 PROJECT_ROOT = Path(__file__).parent.parent.parent
-sys.path.insert(0, str(PROJECT_ROOT))
-
 from src.autonomy.self_monitor import get_monitor, HealthStatus
 
 logger = logging.getLogger(__name__)

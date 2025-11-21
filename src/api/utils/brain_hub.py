@@ -9,16 +9,12 @@
 - Real-time Processing
 """
 
-import sys
 from pathlib import Path
 from typing import Optional, Dict, Any, List
 import logging
 from datetime import datetime
-
 # Add paths
 PROJECT_ROOT = Path(__file__).parent.parent
-sys.path.insert(0, str(PROJECT_ROOT))
-
 import torch
 from brain.mega_brain_v5 import create_mega_brain_v5
 from ai_engine import AIEngine

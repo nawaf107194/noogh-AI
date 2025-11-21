@@ -10,12 +10,7 @@ Plugin Router - GPT-based File Analysis & Code Generation
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 from typing import List, Optional
-import sys
-
 # Add plugin paths
-sys.path.append("/home/noogh/noogh_ai/plugin")
-sys.path.insert(0, str("/home/noogh/projects/noogh_unified_system/core/plugin"))
-
 # Try to import extended plugin core
 try:
     from plugin_gpu_core_extended import (

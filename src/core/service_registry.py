@@ -3,11 +3,13 @@
 """
 Service Registry - Central service registration for DI container
 نظام تسجيل الخدمات - التسجيل المركزي للخدمات في حاوية DI
+
+NOTE: Database sessions are NO LONGER registered here to prevent connection leaks.
+Use FastAPI's Depends(get_db) pattern instead for proper session lifecycle management.
 """
 import logging
 from typing import Optional
 from src.core.di import Container
-from src.core.database import SessionLocal
 
 logger = logging.getLogger(__name__)
 
@@ -19,8 +21,9 @@ def register_core_services():
     """
     logger.info("🚀 Registering core services...")
     
-    # Database session factory
-    Container.register_factory("db_session", lambda: SessionLocal())
+    # ✅ REMOVED: Database session factory (caused connection leaks!)
+    # OLD (WRONG): Container.register_factory("db_session", lambda: SessionLocal())
+    # NEW: Use FastAPI's Depends(get_db) in routes for proper async session management
     
     # Cache Manager
     try:
@@ -37,6 +40,7 @@ def register_core_services():
         logger.warning(f"⚠️ Could not register device_manager: {e}")
     
     logger.info("✅ Core services registered")
+
 
 
 def register_autonomy_services():

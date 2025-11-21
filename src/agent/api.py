@@ -12,14 +12,10 @@ import logging
 from pathlib import Path
 from typing import Optional, Dict, Any
 
-import sys
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-
 # Add parent to path (project root)
-sys.path.insert(0, str(Path(__file__).parent.parent))
-
 try:
     from agent.brain import get_agent  # type: ignore
 except Exception as e:

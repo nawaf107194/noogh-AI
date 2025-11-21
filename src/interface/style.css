@@ -1,0 +1,365 @@
+/*
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   🦅 NOOGH SOVEREIGN INTERFACE - DARK GLASS CITADEL THEME
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+   Palette:
+   - Deep Black: #0E1117 (Main background)
+   - Darker Black: #0B0D11 (Sidebar)
+   - Glass Panels: #1A1D24 (Cards)
+   - Borders: #2D3139 (Subtle separation)
+   - Text Primary: #FFFFFF
+   - Text Secondary: #B0B3B8
+   - Neon Green: #10B981 (Success/Health)
+   - Neon Blue: #3B82F6 (Finance/Info)
+   - Neon Red: #EF4444 (Alerts/Danger)
+   - Matrix Green: #00FF41 (Terminal)
+*/
+
+/* ========================================================================== */
+/* GLOBAL RESET & BASE */
+/* ========================================================================== */
+
+.stApp {
+    background-color: #0E1117;
+    color: #E6E6E6;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #0E1117 0%, #1A1D24 100%);
+}
+
+/* ========================================================================== */
+/* TYPOGRAPHY */
+/* ========================================================================== */
+
+h1, h2, h3, h4, h5, h6 {
+    color: #FFFFFF !important;
+    font-weight: 600 !important;
+    letter-spacing: -0.5px;
+    text-shadow: 0 0 10px rgba(16, 185, 129, 0.3);
+}
+
+p, label, .stMarkdown, span {
+    color: #B0B3B8 !important;
+}
+
+/* ========================================================================== */
+/* METRIC CARDS - GLASS PANELS */
+/* ========================================================================== */
+
+div[data-testid="stMetric"] {
+    background: rgba(26, 29, 36, 0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(45, 49, 57, 0.6);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow:
+        0 4px 6px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+div[data-testid="stMetric"]::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+}
+
+div[data-testid="stMetric"]:hover {
+    border-color: rgba(59, 130, 246, 0.6);
+    transform: translateY(-2px);
+    box-shadow:
+        0 8px 12px rgba(0, 0, 0, 0.4),
+        0 0 20px rgba(59, 130, 246, 0.2);
+}
+
+div[data-testid="stMetric"] label {
+    color: #8A8F99 !important;
+    font-size: 0.85rem !important;
+    font-weight: 500 !important;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+div[data-testid="stMetric"] div[data-testid="stMetricValue"] {
+    color: #FFFFFF !important;
+    font-size: 2rem !important;
+    font-weight: 700 !important;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+}
+
+/* Status Indicators (Left Border Accent) */
+.metric-card-health {
+    border-left: 4px solid #10B981 !important;
+}
+
+.metric-card-finance {
+    border-left: 4px solid #3B82F6 !important;
+}
+
+.metric-card-alert {
+    border-left: 4px solid #EF4444 !important;
+}
+
+/* ========================================================================== */
+/* TERMINAL WINDOW - STREAM OF CONSCIOUSNESS */
+/* ========================================================================== */
+
+.terminal-window {
+    background: linear-gradient(135deg, #000000 0%, #0A0F0D 100%);
+    border: 1px solid #00FF41;
+    border-radius: 8px;
+    padding: 15px;
+    font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.85rem;
+    color: #00FF41;
+    height: 300px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    box-shadow:
+        inset 0 0 20px rgba(0, 0, 0, 0.9),
+        0 0 15px rgba(0, 255, 65, 0.3);
+    position: relative;
+}
+
+.terminal-window::before {
+    content: '●●●';
+    position: absolute;
+    top: 8px;
+    left: 12px;
+    color: #EF4444;
+    font-size: 0.7rem;
+    letter-spacing: 3px;
+}
+
+.terminal-window::-webkit-scrollbar {
+    width: 8px;
+}
+
+.terminal-window::-webkit-scrollbar-track {
+    background: #000000;
+}
+
+.terminal-window::-webkit-scrollbar-thumb {
+    background: #00FF41;
+    border-radius: 4px;
+}
+
+/* ========================================================================== */
+/* BUTTONS */
+/* ========================================================================== */
+
+.stButton > button {
+    background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
+    color: white;
+    border: 1px solid rgba(59, 130, 246, 0.5);
+    border-radius: 8px;
+    font-weight: 600;
+    padding: 0.5rem 1.5rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.stButton > button:hover {
+    background: linear-gradient(135deg, #1D4ED8 0%, #1E40AF 100%);
+    box-shadow:
+        0 4px 8px rgba(0, 0, 0, 0.4),
+        0 0 15px rgba(37, 99, 235, 0.5);
+    transform: translateY(-1px);
+}
+
+/* Kill Switch Button - DANGER STYLE */
+button[kind="primary"] {
+    background: linear-gradient(135deg, #DC2626 0%, #B91C1C 100%) !important;
+    border: 1px solid rgba(220, 38, 38, 0.6) !important;
+    box-shadow: 0 0 15px rgba(220, 38, 38, 0.4) !important;
+}
+
+button[kind="primary"]:hover {
+    background: linear-gradient(135deg, #B91C1C 0%, #991B1B 100%) !important;
+    box-shadow:
+        0 4px 8px rgba(0, 0, 0, 0.4),
+        0 0 20px rgba(220, 38, 38, 0.6) !important;
+}
+
+/* ========================================================================== */
+/* CHAT INTERFACE */
+/* ========================================================================== */
+
+.chat-message {
+    padding: 1rem 1.25rem;
+    border-radius: 10px;
+    margin-bottom: 12px;
+    animation: fadeIn 0.5s ease-in;
+    backdrop-filter: blur(5px);
+    position: relative;
+}
+
+.chat-user {
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.9) 0%, rgba(30, 41, 59, 0.7) 100%);
+    border-left: 3px solid #3B82F6;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.chat-ai {
+    background: linear-gradient(135deg, rgba(26, 29, 36, 0.9) 0%, rgba(26, 29, 36, 0.7) 100%);
+    border-left: 3px solid #10B981;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.chat-message b {
+    color: #FFFFFF !important;
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+}
+
+/* ========================================================================== */
+/* ANIMATIONS */
+/* ========================================================================== */
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.8s ease-out;
+}
+
+/* ========================================================================== */
+/* SIDEBAR - COMMAND CENTER */
+/* ========================================================================== */
+
+section[data-testid="stSidebar"] {
+    background: linear-gradient(180deg, #0B0D11 0%, #0E1117 100%);
+    border-right: 1px solid rgba(45, 49, 57, 0.8);
+    box-shadow: 4px 0 10px rgba(0, 0, 0, 0.5);
+}
+
+section[data-testid="stSidebar"] h1 {
+    text-align: center;
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+    color: #10B981 !important;
+}
+
+/* ========================================================================== */
+/* CUSTOM SCROLLBAR - NEON STYLE */
+/* ========================================================================== */
+
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #0E1117;
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #2D3139 0%, #3B82F6 100%);
+    border-radius: 5px;
+    border: 2px solid #0E1117;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #3B82F6 0%, #2563EB 100%);
+    box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+}
+
+/* ========================================================================== */
+/* INPUT FIELDS */
+/* ========================================================================== */
+
+input, textarea {
+    background-color: rgba(26, 29, 36, 0.8) !important;
+    border: 1px solid rgba(45, 49, 57, 0.8) !important;
+    border-radius: 8px !important;
+    color: #FFFFFF !important;
+    padding: 0.75rem !important;
+}
+
+input:focus, textarea:focus {
+    border-color: rgba(59, 130, 246, 0.8) !important;
+    box-shadow: 0 0 10px rgba(59, 130, 246, 0.3) !important;
+    outline: none !important;
+}
+
+/* ========================================================================== */
+/* CONTAINERS & PANELS */
+/* ========================================================================== */
+
+div[data-testid="stContainer"] {
+    background: rgba(26, 29, 36, 0.5);
+    border-radius: 12px;
+    padding: 1rem;
+}
+
+/* ========================================================================== */
+/* TOAST NOTIFICATIONS */
+/* ========================================================================== */
+
+.stToast {
+    background: rgba(26, 29, 36, 0.95) !important;
+    border: 1px solid rgba(16, 185, 129, 0.5) !important;
+    border-radius: 8px !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* ========================================================================== */
+/* MICROPHONE RECORDER STYLING */
+/* ========================================================================== */
+
+.mic-recorder {
+    border-radius: 50%;
+    box-shadow: 0 0 15px rgba(239, 68, 68, 0.5);
+    animation: pulse 2s infinite;
+}
+
+/* ========================================================================== */
+/* IMAGE CONTAINERS */
+/* ========================================================================== */
+
+img {
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(45, 49, 57, 0.6);
+}
+
+/* ========================================================================== */
+/* GLASSMORPHISM EFFECT ON HOVER */
+/* ========================================================================== */
+
+.glass-panel {
+    background: rgba(26, 29, 36, 0.7);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    box-shadow:
+        0 8px 32px 0 rgba(0, 0, 0, 0.37),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}

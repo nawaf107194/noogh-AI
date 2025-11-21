@@ -68,7 +68,10 @@
       "Bash(then tail -10 logs/watchdog.log)",
       "Bash(else echo \"  No watchdog logs\")",
       "Bash(timeout 5 venv/bin/python:*)",
-      "Bash(du:*)"
+      "Bash(du:*)",
+      "Bash(python scripts/hard_reset.py:*)",
+      "Bash(timeout 5 python3:*)",
+      "Bash(./venv/bin/streamlit run:*)"
     ],
     "deny": [],
     "ask": []

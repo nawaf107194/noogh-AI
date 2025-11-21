@@ -12,10 +12,8 @@ from pydantic import BaseModel
 from typing import List, Optional
 import sys
 
-sys.path.insert(0, "/home/noogh/projects/noogh_unified_system/core/plugin")
-
 try:
-    from gpu_accelerated_tools import (
+    from src.core.plugin.gpu_accelerated_tools import (
         StableDiffusionGenerator,
         WhisperTranscriber,
         CLIPImageAnalyzer,

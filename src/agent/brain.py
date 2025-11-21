@@ -5,17 +5,13 @@ Noogh Agent Brain - العقل المفكر
 """
 
 import os
-import sys
 import json
 import re
 from pathlib import Path
 from typing import Dict, List, Optional, Any
 from datetime import datetime
 import logging
-
 # Add parent to path
-sys.path.insert(0, str(Path(__file__).parent.parent))
-
 try:
     import torch
     from transformers import AutoTokenizer, AutoModelForCausalLM

@@ -30,8 +30,6 @@ from enum import Enum
 
 # Add project root
 PROJECT_ROOT = Path(__file__).parent.parent.parent
-sys.path.insert(0, str(PROJECT_ROOT))
-
 from src.autonomy.monitor_service import get_monitor_service
 from src.autonomy.training_scheduler import get_training_scheduler
 from src.autonomy.feedback_collector import get_feedback_collector

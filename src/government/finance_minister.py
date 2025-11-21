@@ -5,10 +5,7 @@ Finance Minister - وزير المالية
 Responsible for financial analysis, budgeting, and economic planning
 """
 
-import sys
 from pathlib import Path
-sys.path.insert(0, str(Path(__file__).parent.parent.parent))
-
 import logging
 from typing import Dict, Any, Optional
 from datetime import datetime

@@ -1,0 +1,181 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "noogh-unified-system"
+version = "5.0.0"
+description = "Noogh Unified AI System - Advanced AI Platform with Government, Trading, and Brain modules"
+readme = "README.md"
+requires-python = ">=3.9"
+license = {text = "MIT"}
+authors = [
+    {name = "Noogh Team"}
+]
+keywords = ["ai", "ml", "trading", "neural-network", "government-system"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+]
+
+dependencies = [
+    # Core API
+    "fastapi>=0.104.1",
+    "uvicorn[standard]>=0.24.0",
+    "pydantic>=2.5.0",
+    "pydantic-settings>=2.0.0",
+    "python-multipart>=0.0.6",
+    
+    # HTTP & WebSocket
+    "aiohttp>=3.9.1",
+    "websockets>=12.0",
+    "requests>=2.31.0",
+    "httpx>=0.25.2",
+    
+    # Data Processing
+    "pandas>=2.1.4",
+    "numpy>=1.26.2",
+    
+    # AI & ML
+    "torch>=2.2.0",
+    "torchvision>=0.17.0",
+    "transformers>=4.35.2",
+    
+    # GPU-Accelerated AI Tools
+    "diffusers>=0.24.0",
+    "openai-whisper>=20231117",
+    "sentence-transformers>=2.2.2",
+    "ultralytics>=8.0.228",
+    "accelerate>=0.25.0",
+    "safetensors>=0.4.1",
+    
+    # OpenAI Integration
+    "openai>=1.0.0",
+    
+    # Database
+    "sqlalchemy>=2.0.23",
+    "asyncpg>=0.29.0",
+    "aiosqlite>=0.19.0",
+    # Local AI - HuggingFace Transformers
+    "transformers>=4.35.0",
+    "torch>=2.0.0",
+    "accelerate>=0.24.0",
+    "sentencepiece>=0.1.99",  # For some tokenizers
+    "alembic>=1.13.0",
+    
+    # Autonomous Agents - Trading & Analysis
+    "ccxt>=4.0.0",  # Crypto exchange connectivity
+    "pandas>=2.0.0",  # Data analysis
+    "pandas-ta>=0.3.14b",  # Technical analysis indicators
+    "numpy>=1.24.0",  # Numerical computing
+    "mplfinance>=0.12.10b",  # Candlestick chart generation
+    
+    # Autonomous Agents - Health & Intelligence
+    "pynvml>=11.5.0",  # NVIDIA GPU monitoring
+    "googlesearch-python>=1.2.3",  # Web search
+    "requests>=2.31.0",  # HTTP requests
+    "beautifulsoup4>=4.12.0",  # Web scraping
+    
+    # System Integration - OS Dominance
+    "pyudev>=0.24.0",  # Device detection (USB/HDD)
+    "watchdog>=3.0.0",  # File system monitoring
+    
+    # Utilities
+    "python-dotenv>=1.0.0",
+    "pyyaml>=6.0.1",
+    "loguru>=0.7.2",
+    "psutil>=5.9.8",
+    "aiofiles>=23.0.0",
+    
+    # Additional
+    "beautifulsoup4>=4.12.2",
+    "Pillow>=10.1.0",
+    "lxml>=4.9.3",
+    "huggingface_hub>=0.19.0",
+    "bitsandbytes>=0.41.3",
+    
+    # Dashboard & Visualization
+    "streamlit>=1.29.0",
+    "plotly>=5.18.0",
+    "streamlit-autorefresh>=1.0.1",
+    
+    # Voice Integration (The Mouth & Ears)
+    "RealtimeTTS>=0.3.0",  # Neural TTS with Coqui engine
+    "faster-whisper>=0.10.0",  # Local STT (Whisper)
+    "streamlit-mic-recorder>=0.0.8",  # Browser microphone capture
+    "pydub>=0.25.1",  # Audio processing
+    "pyttsx3>=2.90",  # Fallback TTS engine
+    "sounddevice>=0.4.6",  # Audio playback
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+    "pytest-asyncio>=0.23.0",
+    "pytest-cov>=4.1.0",
+    "black>=23.0.0",
+    "ruff>=0.1.0",
+    "mypy>=1.7.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/noogh/unified-system"
+Documentation = "https://docs.noogh.ai"
+Repository = "https://github.com/noogh/unified-system"
+
+[project.scripts]
+noogh = "noogh.api.main:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+namespaces = false
+
+[tool.setuptools.package-data]
+noogh = ["py.typed"]
+
+[tool.black]
+line-length = 100
+target-version = ['py39', 'py310', 'py311']
+include = '\.pyi?$'
+
+[tool.ruff]
+line-length = 100
+target-version = "py39"
+select = ["E", "F", "I", "N", "W", "UP"]
+ignore = ["E501"]
+
+[tool.mypy]
+python_version = "3.9"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false
+disallow_incomplete_defs = false
+check_untyped_defs = true
+no_implicit_optional = true
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+pythonpath = ["src"]  # Critical for imports
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = [
+    "-v",
+    "--strict-markers",
+    "--cov=src",
+    "--cov-report=term-missing",
+    "--cov-report=html",
+]
+markers = [
+    "unit: Unit tests",
+    "integration: Integration tests",
+    "slow: Slow running tests",
+]

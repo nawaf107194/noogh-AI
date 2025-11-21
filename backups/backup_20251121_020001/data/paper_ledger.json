@@ -1,0 +1,13 @@
+{
+  "created": "2025-11-20T20:56:00.481233",
+  "balances": {
+    "spot_usdt": 10000.0,
+    "futures_usdt": 10000.0
+  },
+  "trades": [],
+  "stats": {
+    "total_trades": 0,
+    "profitable_trades": 0,
+    "total_pnl": 0.0
+  }
+}

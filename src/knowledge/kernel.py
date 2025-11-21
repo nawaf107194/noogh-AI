@@ -49,7 +49,7 @@ class KnowledgeKernelV41:
         self,
         knowledge_index_path: str = "/home/noogh/projects/noogh_unified_system/data/simple_index.json",
         brain_device: str = "cpu",
-        enable_brain: bool = False,  # CPU expensive, disabled by default
+        enable_brain: bool = True,  # ✅ تفعيل العقل المحلي
         enable_allam: bool = True,
         enable_intent_routing: bool = True,  # ✨ NEW
         enable_web_search: bool = True,  # ✨ NEW
@@ -85,27 +85,14 @@ class KnowledgeKernelV41:
         except Exception as e:
             logger.error(f"❌ Error loading knowledge: {e}")
 
-        # Neural Brain v4.0 (optional - CPU expensive)
+        # Neural Brain v4.0 (optional - DEPRECATED, using LocalBrainService instead)
+        # The old brain_v4 module doesn't exist - system now uses LocalBrainService in President
         self.brain = None
-        self.brain_enabled = enable_brain
-
+        self.brain_enabled = False
+        
         if enable_brain:
-            try:
-                # Try different import paths for brain_v4
-                # Try different import paths for brain_v4
-                try:
-                    from src.brain.core import create_brain_v4
-                except ImportError:
-                    try:
-                        from brain.core import create_brain_v4
-                    except ImportError:
-                        from src.brain_v4 import create_brain_v4 # Fallback just in case
-
-                self.brain = create_brain_v4(device=brain_device)
-                logger.info(f"✅ Neural Brain v4.0: {self.brain.total_neurons:,} neurons active")
-            except Exception as e:
-                logger.error(f"❌ Error loading Brain v4.0: {e}")
-                self.brain_enabled = False
+            logger.warning("⚠️ Brain v4.0 is deprecated - system uses LocalBrainService in President instead")
+            logger.info("ℹ️ Neural Brain v4.0: Disabled (using LocalBrainService)")
         else:
             logger.info("ℹ️ Neural Brain v4.0: Disabled (enable_brain=False)")
 
@@ -592,15 +579,15 @@ class KnowledgeKernelV41:
             try:
                 session_stats = self.experience_tracker.get_session_stats()
                 stats["session"] = session_stats
-            except:
-                pass
+            except Exception as e:
+                logger.warning(f"Could not get session stats: {e}")
 
         return stats
 
 
 # Factory function
 def create_knowledge_kernel(
-    enable_brain: bool = False,
+    enable_brain: bool = True,  # ✅ تفعيل العقل
     enable_allam: bool = True,
     enable_intent_routing: bool = True,
     enable_web_search: bool = True,
@@ -644,7 +631,7 @@ if __name__ == "__main__":
 
     # Create kernel with all v4.1 features
     kernel = create_knowledge_kernel(
-        enable_brain=False,  # CPU expensive
+        enable_brain=True,  # ✅ مفعّل
         enable_allam=True,
         enable_intent_routing=True,  # ✨ NEW
         enable_web_search=True,  # ✨ NEW
@@ -904,15 +891,15 @@ if __name__ == "__main__":
             try:
                 session_stats = self.experience_tracker.get_session_stats()
                 stats["session"] = session_stats
-            except:
-                pass
+            except Exception as e:
+                logger.warning(f"Could not get session stats: {e}")
 
         return stats
 
 
 # Factory function
 def create_knowledge_kernel(
-    enable_brain: bool = False,
+    enable_brain: bool = True,  # ✅ مفعّل
     enable_allam: bool = True,
     enable_intent_routing: bool = True,
     enable_web_search: bool = True,
@@ -956,7 +943,7 @@ if __name__ == "__main__":
 
     # Create kernel with all v4.1 features
     kernel = create_knowledge_kernel(
-        enable_brain=False,  # CPU expensive
+        enable_brain=True,  # ✅ مفعّل
         enable_allam=True,
         enable_intent_routing=True,  # ✨ NEW
         enable_web_search=True,  # ✨ NEW

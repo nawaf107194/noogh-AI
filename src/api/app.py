@@ -4,14 +4,10 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from pathlib import Path
 import logging
-import sys
 import os
 from datetime import datetime
-
 # Add project root to path
 project_root = Path(__file__).parent.parent.parent
-sys.path.insert(0, str(project_root))
-
 # Import core config
 try:
     from src.core.config import API_HOST, API_PORT, LOG_LEVEL
@@ -22,7 +18,7 @@ except ImportError:
 
 # Setup logging
 logging.basicConfig(
-    level=getattr(logging, LOG_LEVEL),
+    level=getattr(logging, LOG_LEVEL.upper()),
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 )
 logger = logging.getLogger("noogh_unified")
@@ -112,6 +108,8 @@ def register_routers(app: FastAPI):
         'communication': ('src.api.routes.communication', '/communication', ['📡 Communication']),
         'education': ('src.api.routes.education', '', ['Education']),
         'security': ('src.api.routes.security', '', ['Security']),
+        'users': ('src.api.routes.users', '/api/v1', ['users']),
+        'government_v2': ('src.api.routes.government_v2', '/api/v1', ['🏛️ Government V2']),  # Modern government
     }
 
     for name, (module_path, prefix, tags) in routers.items():

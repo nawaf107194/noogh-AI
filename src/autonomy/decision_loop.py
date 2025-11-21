@@ -1,4 +1,6 @@
-import threading, time, json
+import asyncio
+import json
+import time
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -15,8 +17,8 @@ class DecisionLoop:
         self.cfg = config
         self.exec = executor
         self.approvals = approvals
-        self._stop = threading.Event()
-        self._thread: threading.Thread = None
+        self._stop_event = asyncio.Event()
+        self._task: asyncio.Task = None
         self.cycles = 0
 
         # Phase 4.5: Initialize awareness system
@@ -42,27 +44,37 @@ class DecisionLoop:
         with open(LOG, "a", encoding="utf-8") as f:
             f.write(f"[{time.strftime('%Y-%m-%d %H:%M:%S')}] [loop] {msg}\n")
 
-    def start(self):
-        if self._thread and self._thread.is_alive():
+    async def start(self):
+        """Start the decision loop as an async task"""
+        if self._task and not self._task.done():
             return
-        self._thread = threading.Thread(target=self._run, daemon=True)
-        self._thread.start()
-        self._log("Decision loop started")
+        
+        self._stop_event.clear()
+        self._task = asyncio.create_task(self._run())
+        self._log("Decision loop started (Async)")
 
-    def stop(self):
-        self._stop.set()
-        if self._thread:
-            self._thread.join(timeout=2)
+    async def stop(self):
+        """Stop the decision loop"""
+        self._stop_event.set()
+        if self._task:
+            try:
+                await asyncio.wait_for(self._task, timeout=2.0)
+            except asyncio.TimeoutError:
+                self._task.cancel()
+            except asyncio.CancelledError:
+                pass
         self._log("Decision loop stopped")
 
-    def _run(self):
-        while not self._stop.is_set():
+    async def _run(self):
+        """Main async loop"""
+        while not self._stop_event.is_set():
             try:
                 self.cycles += 1
 
                 # Phase 4.5 & 5: Awareness-to-Action Cycle with Baseline Learning
-                # 1. Capture real system health
-                health = self.monitor.capture_snapshot()
+                # 1. Capture real system health (run in executor if blocking)
+                loop = asyncio.get_running_loop()
+                health = await loop.run_in_executor(None, self.monitor.capture_snapshot)
 
                 # 2. Phase 5: Record to baseline history
                 self.baseline.record_snapshot(health)
@@ -108,6 +120,12 @@ class DecisionLoop:
                             # Execute SAFE optimizations automatically
                             if suggestion.optimization_type.value == "SAFE":
                                 try:
+                                    # Assuming exec.submit is async or we wrap it
+                                    # If exec.submit is synchronous, wrap in run_in_executor
+                                    # For now assuming it returns a future or we just call it
+                                    # But wait, exec is likely a ThreadPoolExecutor in the original code
+                                    # We should probably keep using it for the actual execution if it's blocking
+                                    
                                     action = self.exec.submit(
                                         suggestion.id,
                                         suggestion.action_type,
@@ -150,4 +168,10 @@ class DecisionLoop:
 
             except Exception as e:
                 self._log(f"error in cycle {self.cycles}: {e}")
-            time.sleep(self.cfg.interval_sec)
+            
+            # Non-blocking sleep
+            try:
+                await asyncio.wait_for(self._stop_event.wait(), timeout=self.cfg.interval_sec)
+                break # Stop event set
+            except asyncio.TimeoutError:
+                pass # Continue loop

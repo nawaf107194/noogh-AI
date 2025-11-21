@@ -13,7 +13,6 @@ Endpoints:
 - POST /api/monitoring/check          → Trigger manual check
 """
 
-import sys
 from pathlib import Path
 from typing import Optional
 from fastapi import APIRouter, HTTPException, Body
@@ -21,11 +20,8 @@ from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from datetime import datetime
 import logging
-
 # Add project root
 PROJECT_ROOT = Path(__file__).parent.parent.parent
-sys.path.insert(0, str(PROJECT_ROOT))
-
 from autonomy.self_monitor import get_monitor
 from autonomy.monitor_service import get_monitor_service
 

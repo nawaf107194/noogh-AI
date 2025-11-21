@@ -9,17 +9,15 @@ Trading Endpoints
 
 from fastapi import APIRouter, Depends, HTTPException, BackgroundTasks
 from typing import Dict, Any, List, Optional
-import sys
 from pathlib import Path
 import json
 import pandas as pd
 from datetime import datetime, timezone, timedelta
-
+import sys
 # استخدام BASE_DIR من config بدلاً من hardcoded path
 from src.core.config import BASE_DIR
 if str(BASE_DIR) not in sys.path:
-    sys.path.insert(0, str(BASE_DIR))
-
+    sys.path.append(str(BASE_DIR))
 from ..models import (
     APIResponse, TradingSignal, TradingStrategy, PortfolioStatus
 )

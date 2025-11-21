@@ -20,8 +20,7 @@ from datetime import datetime, timezone
 # استخدام BASE_DIR من config
 from src.core.config import BASE_DIR
 if str(BASE_DIR) not in sys.path:
-    sys.path.insert(0, str(BASE_DIR))
-
+    sys.path.append(str(BASE_DIR))
 from ..models import (
     APIResponse, SystemStatus, SystemConfig, ConfigUpdate,
     BackupRequest, RestoreRequest, SystemStats

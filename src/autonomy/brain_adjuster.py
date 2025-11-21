@@ -11,7 +11,6 @@ Features:
 - Rollback ineffective adjustments
 """
 
-import sys
 from pathlib import Path
 from typing import Dict, List, Optional, Any, Tuple
 from dataclasses import dataclass, asdict
@@ -19,11 +18,8 @@ from datetime import datetime, timedelta
 from collections import deque
 from enum import Enum
 import logging
-
 # Add project root
 PROJECT_ROOT = Path(__file__).parent.parent.parent
-sys.path.insert(0, str(PROJECT_ROOT))
-
 from src.autonomy.feedback_collector import get_feedback_collector, MinisterStats
 
 logger = logging.getLogger(__name__)

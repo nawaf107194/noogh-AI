@@ -6,12 +6,8 @@ AI Assistant API Routes
 from fastapi import APIRouter, HTTPException, Body
 from pydantic import BaseModel, Field
 from typing import Optional, Dict, Any, List
-import sys
 import os
-
 # إضافة المسار للمشروع
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../..')))
-
 from ai_assistant.intelligent_assistant import IntelligentAssistant
 from ai_assistant.memory_system import MemorySystem
 from ai_assistant.sentiment_analyzer import SentimentAnalyzer

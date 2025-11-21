@@ -15,7 +15,6 @@ Endpoints:
 - GET  /api/training/models/compare  → Compare model versions
 """
 
-import sys
 from pathlib import Path
 from typing import Optional
 from fastapi import APIRouter, HTTPException
@@ -23,11 +22,8 @@ from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from datetime import datetime
 import logging
-
 # Add project root
 PROJECT_ROOT = Path(__file__).parent.parent.parent
-sys.path.insert(0, str(PROJECT_ROOT))
-
 from autonomy.training_scheduler import get_training_scheduler
 from autonomy.model_manager import get_model_manager
 
