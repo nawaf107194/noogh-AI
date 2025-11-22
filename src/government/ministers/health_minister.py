@@ -165,6 +165,28 @@ Be decisive and prioritize system performance."""
         
         return vitals
     
+    def get_system_health(self) -> Dict[str, Any]:
+        """
+        Get simplified system health for trading decisions.
+        
+        Returns flattened format with gpu_temp, cpu_usage, ram_usage.
+        Used by FinanceMinister for hardware safety checks.
+        """
+        vitals = self.check_vital_signs()
+        
+        # Extract and flatten key metrics
+        gpu = vitals.get("gpu", {})
+        cpu = vitals.get("cpu", {})
+        memory = vitals.get("memory", {})
+        
+        return {
+            "gpu_temp": gpu.get("temperature_c", 0),
+            "gpu_status": gpu.get("status", "unknown"),
+            "cpu_usage": cpu.get("percent", 0),
+            "ram_usage": memory.get("percent", 0),
+            "timestamp": vitals.get("timestamp")
+        }
+    
     def _get_gpu_stats(self) -> Dict[str, Any]:
         """Get GPU statistics."""
         if not self.gpu_available:
